@@ -22,7 +22,7 @@ public class Note {
     private String title;
     private String content;
     private LocalDateTime createDate;
-
+    private String notice;
     @ManyToOne(fetch = FetchType.LAZY)
     private Notebook notebook;
 

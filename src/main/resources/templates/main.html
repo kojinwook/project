@@ -14,28 +14,26 @@
     <dialog th:replace="~{fragments/modal::searchModal}"/>
     <dialog th:replace="~{fragments/modal::renameModal}"/>
     <dialog th:replace="~{fragments/modal::tagModal}"/>
-
     <nav class="bg-blue-300 p-4">
         <div class="container mx-auto flex justify-between items-center">
             <a href="/" class="text-white text-lg font-bold">풋살 모임</a>
             <ul class="flex space-x-4">
-                <li><a href="/" class="text-white">홈</a></li>
-                <li><a href="/about" class="text-white">About</a></li>
-                <li><a href="/inquiry" class="text-white">고객센터</a></li>
+                <li><a href="/" class=" btn w-[90px]" style="background-color: gray;">홈</a></li>
+                <li><a href="/inquiry" class=" btn w-[100px]"  style="background-color: gray;">고객센터</a></li>
                 <li class="relative">
-                    <button class="text-white"><a href="menu">메뉴</a></button>
-                    <ul class="absolute hidden bg-white text-black mt-2 p-2 space-y-2">
-                        <li><a href="/signup" class="block">회원 가입</a></li>
-                        <li><a href="/logout" class="block">로그아웃</a></li>
-                        <li><a href="#" onclick="moveModal.showModal()" class="block">창 이동</a></li>
-                        <li><a href="#" onclick="searchModal.showModal()" class="block">검색</a></li>
-                        <li><a href="#" onclick="renameModal.showModal()" class="block">구장 이름 변경</a></li>
-                        <li><a href="#" onclick="tagModal.showModal()" class="block">태그 목록</a></li>
+                    <a href="#" class="text-white btn w-[90px]" onclick="toggleMenu()" style="background-color: gray;">메뉴</a>
+                    <ul id="menuList" class="absolute hidden bg-black text-black mt-2 p-2 space-y-2" style="text-align: center;">
+                        <a href="/signup" class="btn">회원 가입</a>
+                        <a href="/logout" class="btn">로그아웃</a>
+                        <button class="btn" onclick="renameModal.showModal()">구장 이름 변경</button>
+                        <button class="btn" onclick="tagModal.showModal()">태그 목록</button>
+                        <button class="btn" onclick="searchModal.showModal()">검 색</button>
                     </ul>
                 </li>
             </ul>
         </div>
     </nav>
+
     <div class="flex">
         <div class="bg-indigo-300 w-[20%]">
             <ul class="menu h-[100%] overflow-scroll">
@@ -43,23 +41,13 @@
             </ul>
 
             <form th:action="@{|/books/write|}" method="post">
-                <input type="submit" value="지역 추가" class="postActionBtn">
-            </form>
-
-            <form th:action="@{|/groups/${targetNotebook.id}/books/write|}" method="post">
                 <input type="submit" value="구장 추가" class="postActionBtn">
             </form>
+
             <form th:action="@{|/books/${targetNotebook.id}/delete|}" method="post">
                 <input type="submit" value="구장 삭제" class="postActionBtn">
             </form>
-            <a href="/signup" class="btn">회원 가입</a>
-            <a href="/logout" class="btn">로그아웃</a>
 
-            <button class="btn" onclick="moveModal.showModal()">창 이동</button>
-
-            <button class="btn" onclick="searchModal.showModal()">검색</button>
-            <button class="btn" onclick="renameModal.showModal()">구장 이름 변경</button>
-            <button class="btn" onclick="tagModal.showModal()">태그 목록</button>
 
         </div>
         <div class="bg-red-300 w-[20%] h-[800px] text-center ">
@@ -219,9 +207,21 @@
             });
             return params;
         }
+
+        function toggleMenu() {
+    var menuList = document.getElementById("menuList");
+    if (menuList.classList.contains("hidden")) {
+        menuList.classList.remove("hidden");
+         menuList.style.zIndex = "999";
+    } else {
+        menuList.classList.add("hidden");
+    }
+}
+
+
     </script>
-    <script th:replace="~{fragments/modal::searchModalJs}" />
-    <script th:replace="~{fragments/modal::tagModalJs}" />
+    <script th:replace="~{fragments/modal::searchModalJs}"/>
+    <script th:replace="~{fragments/modal::tagModalJs}"/>
 </div>
 </body>
 </html>

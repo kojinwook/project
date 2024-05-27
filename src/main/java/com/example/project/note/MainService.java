@@ -20,7 +20,7 @@ public class MainService {
     private final TagService tagService;
 
     public MainDataDto getDefaultMainData(String keyword) {
-        List<Notebook> notebookList = notebookService.getTopNotebookList();
+        List<Notebook> notebookList = notebookService.getNotebookList();
 
         if (notebookList.isEmpty()) {
             Notebook notebook = this.saveDefaultNotebook();

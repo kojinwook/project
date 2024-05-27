@@ -24,6 +24,6 @@ public class CalendarController {
         model.addAttribute("month", month);
         model.addAttribute("days", days);
 
-        return "calendar";
+        return "Calendar";
     }
 }

@@ -32,11 +32,7 @@ public class NotebookService {
         return notebookRepository.save(notebook);
     }
 
-    public List<Notebook> getTopNotebookList() {
-        return notebookRepository.findByParentIsNull();
-    }
-
-    public void move(Long id, Long destinationId) {
+        public void move(Long id, Long destinationId) {
         Notebook target = getNotebook(id);
         Notebook destination = getNotebook(destinationId);
 
