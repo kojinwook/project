@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>title</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+<nav class="bg-gray-800 p-4">
+    <div class="container flex justify-between">
+        <a href="/" class="text-white text-xl" style="font-size: 30px;">풋살 모임</a>
+        <ul class="flex space-x-4" >
+            <li><a href="/login" class="text-white">로그인</a></li>
+            <li><a href="/signup" class="text-white">회원가입</a></li>
+        </ul>
+    </div>
+</nav>
+<div class="bg-yellow-400"
+     th:with="notebookList=${mainDataDto.notebookList},
+        noteList=${mainDataDto.noteList},
+        targetNotebook=${mainDataDto.targetNotebook},
+        targetNote=${mainDataDto.targetNote}">
+    <div class="bg-red-600 flex">
+        <div class="bg-indigo-300 w-[10%]">
+            <ul class="menu h-[100%] overflow-scroll">
+                <li th:each="notebook : ${notebookList}">
+                    <th:block th:if="${!#lists.isEmpty(notebook.children)}">
+                        <details open>
+                            <summary class="flex p-0">
+                                <a class="w-[100%] p-[10px]"
+                                   th:classappend="${notebook.id == targetNotebook.id} ? 'bg-blue-600':''"
+                                   th:href="@{|/books/${notebook.id}|}"
+                                   th:text="${notebook.name}"></a>
+                            </summary>
+                            <ul>
+                                <li th:each="child : ${notebook.children}">
+                                    <a th:class="${child.id == targetNotebook.id} ? 'w-[100%] p-[10px] bg-blue-600' : ''"
+                                       th:href="@{|/books/${child.id}|}" th:text="${child.name}"></a>
+                                </li>
+                            </ul>
+                        </details>
+                    </th:block>
+                    <th:block th:if="${#lists.isEmpty(notebook.children) and notebook.parent == null}">
+                        <a th:class="${notebook.id == targetNotebook.id} ? 'w-[100%] p-[10px] bg-blue-600' : ''"
+                           th:href="@{|/books/${notebook.id}|}" th:text="${notebook.name}"></a>
+                    </th:block>
+                </li>
+            </ul>
+
+            <form th:action="@{|/books/write|}" method="post" style="font-size: 25px;">
+                <input type="submit" value="지역 추가">
+            </form>
+
+            <form th:action="@{|/groups/${targetNotebook.id}/books/write|}" method="post" style="font-size: 25px;">
+                <input type="submit" value="구장 추가">
+            </form>
+        </div>
+        <div class="bg-red-300 w-[10%] h-[800px] text-center">
+            <ul class="h-[100%] overflow-scroll">
+                <li th:each="note : ${noteList}" th:class="${note.id == targetNote.id} ? 'bg-blue-600' : ''">
+                    <a th:href="@{|/books/${targetNotebook.id}/notes/${note.id}|}" th:text="${note.title}"></a>
+                </li>
+            </ul>
+
+            <form th:action="@{|/books/${targetNotebook.id}/notes/write|}" method="post" style="font-size: 25px;">
+                <input type="submit" value="매치 추가">
+            </form>
+        </div>
+        <div class="bg-green-300 w-[80%]">
+            <form th:action="@{|/books/${targetNotebook.id}/notes/${targetNote.id}/update|}" method="post" id="updateForm">
+                <div>
+                    <input type="hidden" name="id" th:value="${targetNote.id}">
+                </div>
+                <div>
+                    <input type="text" name="title" th:value="${targetNote.title}">
+                </div>
+                <div>
+                    <textarea name="content" cols="30" rows="10" th:text="${targetNote.content}"></textarea>
+                </div>
+                <div>
+                    <input type="button" value="매치 수정" onclick="updateForm()" style="font-size: 25px;">
+                </div>
+            </form>
+            <form th:action="@{|/books/${targetNotebook.id}/notes/${targetNote.id}/delete|}" method="post" id="deleteForm">
+                <input type="button" value="매치 삭제" onclick="deleteForm();" style="font-size: 25px;">
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    function updateForm() {
+        const form = document.getElementById("updateForm");
+        if (confirm("해당 매치를 수정하시겠습니까?")) {
+            form.submit();
+        }
+    }
+
+    function deleteForm() {
+        const form = document.getElementById("deleteForm");
+        if (confirm("해당 매치를 삭제하시겠습니까?")) {
+            form.submit();
+        }
+    }
+</script>
+</body>
+</html>
