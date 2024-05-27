@@ -20,8 +20,6 @@ public class Note {
     private String content;
     private LocalDateTime createDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Notebook notebook;
 
 
 

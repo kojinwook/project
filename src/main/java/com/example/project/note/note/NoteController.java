@@ -1,59 +1,72 @@
 package com.example.project.note.note;
 
 
-import com.example.project.note.MainDataDto;
-import com.example.project.note.MainService;
-import com.example.project.note.notebook.Notebook;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/books/{notebookId}/notes")
 public class NoteController {
+    private final NoteRepository noteRepository;
 
-    private final NoteService noteService;
-    private final MainService mainService;
+    @RequestMapping("/test")
+    @ResponseBody
+    public String test() {
+        return "test";
+    }
 
-
-    @PostMapping("/write")
-    public String write(@PathVariable("notebookId") Long notebookId) {
-        Notebook notebook = noteService.getNotebook(notebookId);
-        noteService.saveDefault();
+    @RequestMapping("/")
+    public String main(Model model) {
+    List<Note> noteList = noteRepository.findAll();
+    if(noteList.isEmpty()){
+        saveDefault();
         return "redirect:/";
     }
 
-    @GetMapping("/{id}")
-    public String detail(Model model, @PathVariable("notebookId") Long notebookId, @PathVariable("id") Long id) {
-        MainDataDto mainDataDto = mainService.getMainData(notebookId, id);
-        model.addAttribute("mainDataDto", mainDataDto);
+
+
+    model.addAttribute("noteList", noteList);
+    model.addAttribute("targetNote", noteList.get(0));
+
         return "main";
     }
 
-    @PostMapping("/{id}/update")
-    public String update(@PathVariable("notebookId") Long notebookId, @PathVariable("id") Long id, String title, String content) {
-        Note note = noteService.getNote(id);
+    @PostMapping("/write")
+    public String write() {
+        saveDefault();
+        return "redirect:/";
+    }
 
-        if (title.trim().length() == 0) {
-            title = "마감된 매치";
-        }
+    @GetMapping("/detail/{id}")
+    public String detail(Model model, @PathVariable Long id) {
+        Note note = noteRepository.findById(id).get();
+        model.addAttribute("targetNote", note);
+        model.addAttribute("noteList", noteRepository.findAll());
 
+        return "main";
+    }
+    @PostMapping("/update")
+    public String update(Long id, String title, String content) {
+        Note note = noteRepository.findById(id).get();
         note.setTitle(title);
         note.setContent(content);
 
-        noteService.save(note);
-        return "redirect:/books/%d/notes/%d".formatted(notebookId, id);
+        noteRepository.save(note);
+        return "redirect:/detail/" + id;
     }
+    private Note saveDefault(){
+        Note note = new Note();
+        note.setTitle("new title..");
+        note.setContent("");
+        note.setCreateDate(LocalDateTime.now());
 
-    @PostMapping("/{id}/delete")
-    public String delete(@PathVariable("notebookId") Long notebookId, @PathVariable("id") Long id) {
-
-        noteService.delete(id);
-        return "redirect:/";
+        noteRepository.save(note);
+        return noteRepository.save(note);
     }
 }
