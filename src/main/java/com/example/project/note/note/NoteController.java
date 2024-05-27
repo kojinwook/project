@@ -1,70 +1,62 @@
 package com.example.project.note.note;
 
 
-import com.example.project.note.notebook.Notebook;
-import com.example.project.note.notebook.NotebookRepository;
+import com.example.project.note.MainDataDto;
+import com.example.project.note.MainService;
+import com.example.project.note.ParamHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/books/{notebookId}/notes")
 public class NoteController {
-    private final NoteRepository noteRepository;
-    private final NotebookRepository notebookRepository;
+
     private final NoteService noteService;
-    @RequestMapping("/test")
-    @ResponseBody
-    public String test() {
-        return "test";
-    }
-
-
+    private final MainService mainService;
 
     @PostMapping("/write")
-    public String write(@PathVariable("notebookId") Long notebookId) {
-        Notebook notebook = notebookRepository.findById(notebookId).orElseThrow();
-        noteService.saveDefault(notebook);
-        return "redirect:/";
+    public String write(@PathVariable("notebookId") Long notebookId, ParamHandler paramHandler) {
+
+        mainService.addToNotebook(notebookId);
+        return paramHandler.getRedirectUrl("/");
     }
 
     @GetMapping("/{id}")
-    public String detail(Model model, @PathVariable("id") Long id,
-                         @PathVariable("notebookId") Long notebookId) {
-        Note note = noteRepository.findById(id).get();
-        List<Notebook> notebookList = notebookRepository.findAll();
-        Notebook targetNotebook = notebookRepository.findById(notebookId).get();
-        List<Note> noteList = noteRepository.findByNotebook(targetNotebook);
-        model.addAttribute("notebookList",notebookList);
-        model.addAttribute("targetNotebook",targetNotebook);
-        model.addAttribute("targetNote", note);
-        model.addAttribute("noteList", noteList);
+    public String detail(Model model, @PathVariable("notebookId") Long notebookId, @PathVariable("id") Long id,
+                         ParamHandler paramHandler) {
+
+        MainDataDto mainDataDto = mainService.getMainData(notebookId, id, paramHandler.getKeyword(), paramHandler.getSort());
+        model.addAttribute("mainDataDto", mainDataDto);
 
         return "main";
     }
     @PostMapping("/{id}/update")
-    public String update(@PathVariable("notebookId")Long notebookId,
-                         @PathVariable("id") Long id, String title, String content) {
-        Note note = noteRepository.findById(id).get();
-        if(title.trim().length()==0){
-            title="마감된 매치";
+    public String update(@PathVariable("notebookId") Long notebookId, @PathVariable("id") Long id, String title, String content, ParamHandler paramHandler){
+        Note note = noteService.getNote(id);
+
+        if(title.trim().length() == 0) {
+            title = "마감된 매치";
         }
+
         note.setTitle(title);
         note.setContent(content);
 
-        noteRepository.save(note);
-        return "redirect:/books/%d/notes/%d".formatted(notebookId,id);
+        noteService.save(note);
+        return paramHandler.getRedirectUrl("/books/%d/notes/%d".formatted(notebookId, id));
     }
+
     @PostMapping("/{id}/delete")
-    public String delete(@PathVariable("id") Long id,@PathVariable("notebookId") Long notebookId){
-        noteRepository.deleteById(id);
-        return "redirect:/";
+    public String delete(@PathVariable("notebookId") Long notebookId, @PathVariable("id") Long id, ParamHandler paramHandler) {
+
+        noteService.delete(id);
+        return paramHandler.getRedirectUrl("/");
     }
+
 
 }

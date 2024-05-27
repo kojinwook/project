@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Calendar</title>
+</head>
+<body>
+<div>
+    <a th:href="@{/calendar(year=${year}, month=${month - 1})}">&lt; Previous</a>
+    <span th:text="${year} + '년 ' + ${month} + '월'">Current Month</span>
+    <a th:href="@{/calendar(year=${year}, month=${month + 1})}">Next &gt;</a>
+</div>
+
+<div>
+    <table>
+        <tr th:each="day : ${days}">
+            <td th:text="${day}">1</td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

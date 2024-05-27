@@ -2,5 +2,10 @@ package com.example.project.note.notebook;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface NotebookRepository extends JpaRepository<Notebook , Long> {
+import java.util.List;
+
+public interface NotebookRepository extends JpaRepository<Notebook, Long>{
+    List<Notebook> findByParentIsNull();
+
+    List<Notebook> findByNameContaining(String keyword);
 }
