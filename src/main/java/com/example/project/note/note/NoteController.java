@@ -1,12 +1,15 @@
 package com.example.project.note.note;
 
 
+import com.example.project.note.notebook.Notebook;
+import com.example.project.note.notebook.NotebookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -14,45 +17,40 @@ import java.util.List;
 @RequestMapping("/books/{notebookId}/notes")
 public class NoteController {
     private final NoteRepository noteRepository;
-
+    private final NotebookRepository notebookRepository;
+    private final NoteService noteService;
     @RequestMapping("/test")
     @ResponseBody
     public String test() {
         return "test";
     }
 
-    @RequestMapping("/")
-    public String main(Model model) {
-    List<Note> noteList = noteRepository.findAll();
-    if(noteList.isEmpty()){
-        saveDefault();
-        return "redirect:/";
-    }
 
-
-
-    model.addAttribute("noteList", noteList);
-    model.addAttribute("targetNote", noteList.get(0));
-
-        return "main";
-    }
 
     @PostMapping("/write")
-    public String write() {
-        saveDefault();
+    public String write(@PathVariable("notebookId") Long notebookId) {
+        Notebook notebook = notebookRepository.findById(notebookId).orElseThrow();
+        noteService.saveDefault(notebook);
         return "redirect:/";
     }
 
-    @GetMapping("/detail/{id}")
-    public String detail(Model model, @PathVariable Long id) {
+    @GetMapping("/{id}")
+    public String detail(Model model, @PathVariable("id") Long id,
+                         @PathVariable("notebookId") Long notebookId) {
         Note note = noteRepository.findById(id).get();
+        List<Notebook> notebookList = notebookRepository.findAll();
+        Notebook targetNotebook = notebookRepository.findById(notebookId).get();
+        List<Note> noteList = noteRepository.findByNotebook(targetNotebook);
+        model.addAttribute("notebookList",notebookList);
+        model.addAttribute("targetNotebook",targetNotebook);
         model.addAttribute("targetNote", note);
-        model.addAttribute("noteList", noteRepository.findAll());
+        model.addAttribute("noteList", noteList);
 
         return "main";
     }
-    @PostMapping("/update")
-    public String update(Long id, String title, String content) {
+    @PostMapping("/{id}/update")
+    public String update(@PathVariable("notebookId")Long notebookId,
+                         @PathVariable("id") Long id, String title, String content) {
         Note note = noteRepository.findById(id).get();
         if(title.trim().length()==0){
             title="마감된 매치";
@@ -61,31 +59,12 @@ public class NoteController {
         note.setContent(content);
 
         noteRepository.save(note);
-        return "redirect:/detail/" + id;
+        return "redirect:/books/%d/notes/%d".formatted(notebookId,id);
     }
-    @PostMapping("/delete/{id}")
-    public String delete(@PathVariable("id") Long id){
+    @PostMapping("/{id}/delete")
+    public String delete(@PathVariable("id") Long id,@PathVariable("notebookId") Long notebookId){
         noteRepository.deleteById(id);
         return "redirect:/";
     }
-    private Note saveDefault(){
-        Note note = new Note();
-        note.setTitle("새 매치");
-        note.setContent("* 시간 : \n " +
-                "* 장소 : \n +" +
-                "* 모든 레벨 \n " +
-                "* 금액 / 시간  : 인당 10000원 / 2시간 \n" +
-                "* 인원수 : 10 ~ 18 명 \n" +
-                "* 6 vs 6 3파전 \n" +
-                "* 풋살화 / 운동화 착용 \n" +
-                "* 주의 사항 :  \n" +
-                "* 구장 정보 : \n" +
-                "* 매치 진행 방식 : \n" +
-                "* 매치 규칙 : \n" +
-                "환불 정책 : \n);");
-        note.setCreateDate(LocalDateTime.now());
 
-        noteRepository.save(note);
-        return noteRepository.save(note);
-    }
 }
