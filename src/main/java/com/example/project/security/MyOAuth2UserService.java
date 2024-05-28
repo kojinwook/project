@@ -1,7 +1,7 @@
 package com.example.project.security;
 
-import com.example.project.note.member.Member;
-import com.example.project.note.member.MemberRepository;
+import com.example.project.football.member.Member;
+import com.example.project.football.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;

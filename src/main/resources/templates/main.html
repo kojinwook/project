@@ -1,12 +1,12 @@
 <html lang="ko" layout:decorate="~{layout}">
 <body>
 <div layout:fragment="content"
-     th:with="notebookList=${mainDataDto.notebookList},
-        noteList=${mainDataDto.noteList},
-        targetNotebook=${mainDataDto.targetNotebook},
-        targetNote=${mainDataDto.targetNote},
-        searchedNotebookList=${mainDataDto.searchedNotebookList},
-        searchedNoteList=${mainDataDto.searchedNoteList},
+     th:with="CalendarList=${mainDataDto.CalendarList},
+        GameList=${mainDataDto.GameList},
+        targetCalendar=${mainDataDto.targetCalendar},
+        targetGame=${mainDataDto.targetGame},
+        searchedCalendarList=${mainDataDto.searchedCalendarList},
+        searchedGameList=${mainDataDto.searchedGameList},
         tagList = ${mainDataDto.tagList}
 ">
 
@@ -37,14 +37,14 @@
     <div class="flex">
         <div class="bg-indigo-300 w-[20%]">
             <ul class="menu h-[100%] overflow-scroll">
-                <li th:replace="~{fragments/notebook::noteTree(${notebookList}, ${targetNotebook})}">
+                <li th:replace="~{fragments/Calendar::GameTree(${CalendarList}, ${targetCalendar})}">
             </ul>
 
             <form th:action="@{|/books/write|}" method="post">
                 <input type="submit" value="구장 추가" class="postActionBtn">
             </form>
 
-            <form th:action="@{|/books/${targetNotebook.id}/delete|}" method="post">
+            <form th:action="@{|/books/${targetCalendar.id}/delete|}" method="post">
                 <input type="submit" value="구장 삭제" class="postActionBtn">
             </form>
 
@@ -52,27 +52,27 @@
         </div>
         <div class="bg-red-300 w-[20%] h-[800px] text-center ">
             <ul class="h-[100%] overflow-scroll">
-                <li th:each="note : ${noteList}" th:class="${note.id == targetNote.id} ? 'bg-blue-600' : ''">
-                    <a th:data-url="@{|/books/${targetNotebook.id}/notes/${note.id}|}" th:text="${note.title}"
+                <li th:each="Game : ${GameList}" th:class="${Game.id == targetGame.id} ? 'bg-blue-600' : ''">
+                    <a th:data-url="@{|/books/${targetCalendar.id}/Games/${Game.id}|}" th:text="${Game.title}"
                        class="getActionBtn"></a>
                 </li>
             </ul>
 
-            <form th:action="@{|/books/${targetNotebook.id}/notes/write|}" method="post">
+            <form th:action="@{|/books/${targetCalendar.id}/Games/write|}" method="post">
                 <input type="submit" value="추가" class="postActionBtn">
             </form>
-            <a th:data-url="@{|/books/${targetNotebook.id}/notes/${targetNote.id}|}" class="btn sortDate">날짜순</a>
-            <a th:data-url="@{|/books/${targetNotebook.id}/notes/${targetNote.id}|}" class="btn sortTitle">이름순</a>
+            <a th:data-url="@{|/books/${targetCalendar.id}/Games/${targetGame.id}|}" class="btn sortDate">날짜순</a>
+            <a th:data-url="@{|/books/${targetCalendar.id}/Games/${targetGame.id}|}" class="btn sortTitle">이름순</a>
         </div>
 
         <div class="w-[60%]">
-            <form th:action="@{|/books/${targetNotebook.id}/notes/${targetNote.id}/update|}" method="post"
+            <form th:action="@{|/books/${targetCalendar.id}/Games/${targetGame.id}/update|}" method="post"
                   id="updateForm">
                 <div>
-                    <input type="hidden" name="id" th:value="${targetNote.id}">
+                    <input type="hidden" name="id" th:value="${targetGame.id}">
                 </div>
                 <div>
-                    <input type="text" name="title" th:value="${targetNote.title}">
+                    <input type="text" name="title" th:value="${targetGame.title}">
                 </div>
                 <input type="hidden" name="content" id="editor-body">
                 <div id="editor"></div>
@@ -80,18 +80,18 @@
                     <input type="button" value="매치 수정" onclick="updateForm()" class="postActionBtn">
                 </div>
             </form>
-            <form th:action="@{|/books/${targetNotebook.id}/notes/${targetNote.id}/delete|}" method="post"
+            <form th:action="@{|/books/${targetCalendar.id}/Games/${targetGame.id}/delete|}" method="post"
                   id="deleteForm">
                 <input type="button" value="매치 삭제" onclick="deleteForm();" class="postActionBtn">
             </form>
             <ul class="flex gap-5">
-                <li th:each="noteTag : ${targetNote.noteTagList}">
-                    <form th:action="@{|/notes/${targetNote.id}/tags/${noteTag.id}/delete|}" method="post">
-                        <input type="submit" th:value="${noteTag.tag.name}" class="btn">
+                <li th:each="GameTag : ${targetGame.GameTagList}">
+                    <form th:action="@{|/Games/${targetGame.id}/tags/${GameTag.id}/delete|}" method="post">
+                        <input type="submit" th:value="${GameTag.tag.name}" class="btn">
                     </form>
                 </li>
             </ul>
-            <form th:action="@{|/notes/${targetNote.id}/tags/create|}" method="post">
+            <form th:action="@{|/Games/${targetGame.id}/tags/create|}" method="post">
                 <input type="text" name="name" class="input input-bordered" placeholder="태그 추가">
                 <input type="submit" class="postActionBtn btn" value="추가">
             </form>
@@ -113,7 +113,7 @@
             height: '700px',
             initialEditType: 'markdown',
             previewStyle: 'vertical',
-            initialValue: [[${targetNote.content}]]
+            initialValue: [[${targetGame.content}]]
         });
         editor.getMarkdown();
     </script>

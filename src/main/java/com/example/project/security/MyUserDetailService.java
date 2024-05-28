@@ -1,7 +1,7 @@
 package com.example.project.security;
 
-import com.example.project.note.member.Member;
-import com.example.project.note.member.MemberRepository;
+import com.example.project.football.member.Member;
+import com.example.project.football.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
