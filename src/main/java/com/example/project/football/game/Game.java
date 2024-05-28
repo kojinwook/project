@@ -24,6 +24,6 @@ public class Game {
     @ManyToOne(fetch = FetchType.LAZY)
     private Calendar calendar;
 
-    @OneToMany(mappedBy = "game")
-    private List<GameTag> GameTagList = new ArrayList<>();
+    @OneToMany(mappedBy = "game" , cascade = CascadeType.REMOVE)
+    private List<GameTag> gameTagList = new ArrayList<>();
 }

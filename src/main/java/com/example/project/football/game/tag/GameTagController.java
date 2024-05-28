@@ -9,23 +9,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/Games/{GameId}/tags")
+@RequestMapping("/games/{gameId}/tags")
 public class GameTagController {
     private final GameTagService gameTagService;
 
     @PostMapping("/create")
-    public String create(@PathVariable("GameId") Long GameId, String name, ParamHandler paramHandler) {
-        GameTag GameTag = gameTagService.create(GameId, name);
-        Long calendarId = GameTag.getGame().getCalendar().getId();
-        return paramHandler.getRedirectUrl("/%d/Games/%d".formatted(calendarId, GameId));
+    public String create(@PathVariable("gameId") Long gameId, String name, ParamHandler paramHandler) {
+        GameTag gameTag = gameTagService.create(gameId, name);
+        Long calendarId = gameTag.getGame().getCalendar().getId();
+        return paramHandler.getRedirectUrl("/matchs/%d/games/%d".formatted(calendarId, gameId));
     }
 
-    @PostMapping("{GameTagId}/delete")
-    public String delete(@PathVariable("GameId") Long GameId, @PathVariable("GameTagId") Long GameTagId, ParamHandler paramHandler) {
-        GameTag gameTag = gameTagService.getGameTag(GameTagId);
+    @PostMapping("/matchs/{gameTagId}/delete")
+    public String delete(@PathVariable("gameId") Long gameId, @PathVariable("gameTagId") Long gameTagId, ParamHandler paramHandler) {
+        GameTag gameTag = gameTagService.getGameTag(gameTagId);
         Long calendarId = gameTag.getGame().getCalendar().getId();
-        gameTagService.delete(GameTagId);
+        gameTagService.delete(gameTagId);
 
-        return paramHandler.getRedirectUrl("/%d/Games/%d".formatted(calendarId, GameId));
+        return paramHandler.getRedirectUrl("/matchs/%d/games/%d".formatted(calendarId, gameId));
     }
 }

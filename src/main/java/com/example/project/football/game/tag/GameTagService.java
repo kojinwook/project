@@ -14,23 +14,23 @@ public class GameTagService {
     private final GameService gameService;
     private final TagService tagService;
 
-    public GameTag getGameTag(Long GameTagId) {
-        return gameTagRepository.findById(GameTagId).orElseThrow();
+    public GameTag getGameTag(Long gameTagId) {
+        return gameTagRepository.findById(gameTagId).orElseThrow();
     }
 
-    public GameTag create(Long GameId, String name) {
-        Game Game = gameService.getGame(GameId);
+    public GameTag create(Long gameId, String name) {
+        Game game = gameService.getGame(gameId);
         Tag tag = tagService.create(name);
 
         GameTag gameTag = new GameTag();
-        gameTag.setGame(Game);
+        gameTag.setGame(game);
         gameTag.setTag(tag);
 
         return gameTagRepository.save(gameTag);
     }
 
-    public void delete(Long GameTagId) {
-        gameTagRepository.deleteById(GameTagId);
+    public void delete(Long gameTagId) {
+        gameTagRepository.deleteById(gameTagId);
     }
 }
 

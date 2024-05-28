@@ -22,20 +22,20 @@ public class TagController {
     private final TagService tagService;
     private final MainService mainService;
 
-    @GetMapping("/{tagId}/Games")
-    public String tagGames(@PathVariable("tagId") Long tagId, Long CalendarId, Long gameId, ParamHandler paramHandler, Model model) {
+    @GetMapping("/{tagId}/games")
+    public String tagGames(@PathVariable("tagId") Long tagId, Long calendarId, Long gameId, ParamHandler paramHandler, Model model) {
         Tag tag = tagService.getTag(tagId);
-        List<GameTag> GameTagList = tag.getGameTagList();
-        List<Game> GameListByTag = new ArrayList<>();
+        List<GameTag> gameTagList = tag.getGameTagList();
+        List<Game> gameListByTag = new ArrayList<>();
 
-        for (GameTag gameTag : GameTagList) {
-            GameListByTag.add(gameTag.getGame());
+        for (GameTag gameTag : gameTagList) {
+            gameListByTag.add(gameTag.getGame());
         }
 
-        MainDataDto mainDataDto = mainService.getMainData(CalendarId, gameId, paramHandler.getKeyword(), paramHandler.getSort());
+        MainDataDto mainDataDto = mainService.getMainData(calendarId, gameId, paramHandler.getKeyword(), paramHandler.getSort());
 
         model.addAttribute("mainDataDto", mainDataDto);
-        model.addAttribute("GameListByTag", GameListByTag);
+        model.addAttribute("gameListByTag", gameListByTag);
         model.addAttribute("targetTag", tag);
 
         return "main";

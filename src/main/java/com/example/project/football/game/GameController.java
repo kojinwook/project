@@ -13,31 +13,31 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/{CalendarId}/Games")
+@RequestMapping("/matchs/{calendarId}/games")
 public class GameController {
 
-    private final GameService GameService;
+    private final GameService gameService;
     private final MainService mainService;
 
     @PostMapping("/write")
-    public String write(@PathVariable("CalendarId") Long CalendarId, ParamHandler paramHandler) {
+    public String write(@PathVariable("calendarId") Long calendarId, ParamHandler paramHandler) {
 
-        mainService.addToCalendar(CalendarId);
+        mainService.addToCalendar(calendarId);
         return paramHandler.getRedirectUrl("/");
     }
 
     @GetMapping("/{id}")
-    public String detail(Model model, @PathVariable("CalendarId") Long CalendarId, @PathVariable("id") Long id,
+    public String detail(Model model, @PathVariable("calendarId") Long calendarId, @PathVariable("id") Long id,
                          ParamHandler paramHandler) {
 
-        MainDataDto mainDataDto = mainService.getMainData(CalendarId, id, paramHandler.getKeyword(), paramHandler.getSort());
+        MainDataDto mainDataDto = mainService.getMainData(calendarId, id, paramHandler.getKeyword(), paramHandler.getSort());
         model.addAttribute("mainDataDto", mainDataDto);
 
         return "main";
     }
     @PostMapping("/{id}/update")
     public String update(@PathVariable("calendarId") Long calendarId, @PathVariable("id") Long id, String title, String content, ParamHandler paramHandler){
-        Game game = GameService.getGame(id);
+        Game game = gameService.getGame(id);
 
         if(title.trim().length() == 0) {
             title = "마감된 매치";
@@ -46,14 +46,14 @@ public class GameController {
         game.setTitle(title);
         game.setContent(content);
 
-        GameService.save(game);
-        return paramHandler.getRedirectUrl("/%d/Games/%d".formatted(calendarId, id));
+        gameService.save(game);
+        return paramHandler.getRedirectUrl("/matchs/%d/games/%d".formatted(calendarId, id));
     }
 
     @PostMapping("/{id}/delete")
     public String delete(@PathVariable("calendarId") Long calendarId, @PathVariable("id") Long id, ParamHandler paramHandler) {
 
-        GameService.delete(id);
+        gameService.delete(id);
         return paramHandler.getRedirectUrl("/");
     }
 

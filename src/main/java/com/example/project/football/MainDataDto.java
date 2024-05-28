@@ -17,7 +17,7 @@ import java.util.List;
 public class MainDataDto {
     List<Calendar> calendarList = new ArrayList<>();
     Calendar targetCalendar;
-    List<Game> GameList = new ArrayList<>();
+    List<Game> gameList = new ArrayList<>();
     Game targetGame;
     List<Calendar> searchedCalendarList = new ArrayList<>();
     List<Game> searchedGameList = new ArrayList<>();

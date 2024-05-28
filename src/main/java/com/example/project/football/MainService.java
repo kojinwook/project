@@ -28,22 +28,22 @@ public class MainService {
         }
 
         Calendar targetCalendar = calendarList.get(0);
-        List<Game> GameList = targetCalendar.getGameList();
-        Game targetGame = GameList.get(0);
+        List<Game> gameList = targetCalendar.getGameList();
+        Game targetGame = gameList.get(0);
 
         List<Calendar> searchedCalendarList = calendarService.getSearchedCalendarList(keyword);
         List<Game> searchedGameList = gameService.getSearchedGameList(keyword);
         List<Tag> tagList = tagService.getTagList();
 
-        MainDataDto mainDataDto = new MainDataDto(calendarList, targetCalendar, GameList, targetGame, searchedCalendarList, searchedGameList, tagList);
+        MainDataDto mainDataDto = new MainDataDto(calendarList, targetCalendar, gameList, targetGame, searchedCalendarList, searchedGameList, tagList);
         return mainDataDto;
     }
 
-    public MainDataDto getMainData(Long calendarId, Long GameId, String keyword, String sort) {
+    public MainDataDto getMainData(Long calendarId, Long gameId, String keyword, String sort) {
 
         MainDataDto mainDataDto = this.getDefaultMainData(keyword);
         Calendar targetCalendar = this.getCalendar(calendarId);
-        Game targetGame = gameService.getGame(GameId);
+        Game targetGame = gameService.getGame(gameId);
 
         mainDataDto.setTargetCalendar(targetCalendar);
         mainDataDto.setTargetGame(targetGame);
@@ -74,8 +74,8 @@ public class MainService {
         Calendar calendar = new Calendar();
         calendar.setName("새 구장");
 
-        Game Game = gameService.saveDefault();
-        calendar.addGame(Game);
+        Game game = gameService.saveDefault();
+        calendar.addGame(game);
 
         return calendarService.save(calendar);
     }
@@ -90,8 +90,8 @@ public class MainService {
 
     public Calendar addToCalendar(Long calendarId) {
         Calendar calendar = this.getCalendar(calendarId);
-        Game Game = gameService.saveDefault();
-        calendar.addGame(Game);
+        Game game = gameService.saveDefault();
+        calendar.addGame(game);
 
         return calendarService.save(calendar);
     }
@@ -121,10 +121,10 @@ public class MainService {
 
     public void deleteBasic(Calendar calendar) {
 
-        List<Game> GameList = calendar.getGameList();
+        List<Game> gameList = calendar.getGameList();
 
-        for (Game Game : GameList) {
-            gameService.delete(Game.getId());
+        for (Game game : gameList) {
+            gameService.delete(game.getId());
         }
         calendarService.delete(calendar.getId());
     }

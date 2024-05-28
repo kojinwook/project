@@ -19,7 +19,7 @@ public class Tag {
     private String name;
 
     @OneToMany(mappedBy = "tag")
-    private List<GameTag> GameTagList = new ArrayList<>();
+    private List<GameTag> gameTagList = new ArrayList<>();
 
 
 }

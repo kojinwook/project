@@ -1,9 +1,9 @@
 <dialog th:fragment="moveModal" id="moveModal" class="modal">
     <div class="modal-box">
-        <form th:action="@{|/${targetCalendar.id}/move|}" method="post">
+        <form th:action="@{|/matchs/${targetCalendar.id}/move|}" method="post">
             <div>
                 <ul class="menu h-[100%] overflow-scroll">
-                    <li th:replace="~{fragments/Calendar::moveTree(${CalendarList}, ${targetCalendar})}">
+                    <li th:replace="~{fragments/calendar::moveTree(${calendarList}, ${targetCalendar})}">
                 </ul>
             </div>
             <div class="flex justify-end">
@@ -33,14 +33,14 @@
         </div>
         <ul class="h-[70%] border-2 overflow-auto"
             th:with="itemHover='hover:bg-blue-600 hover:text-white p-[10px] flex', itemAnchorClass='getActionBtn inline-block w-[100%]'">
-            <li th:each="Calendar : ${searchedCalendarList}" th:class="${itemHover}">
+            <li th:each="calendar : ${searchedCalendarList}" th:class="${itemHover}">
                 <i class="fa-solid fa-book p-[5px]"></i>
-                <a th:data-url="@{|/${Calendar.id}|}" th:text="${Calendar.name}"
+                <a th:data-url="@{|/matchs/${calendar.id}|}" th:text="${calendar.name}"
                    th:class="${itemAnchorClass}"></a>
             </li>
-            <li th:each="Game : ${searchedGameList}" th:class="${itemHover}">
+            <li th:each="game : ${searchedGameList}" th:class="${itemHover}">
                 <i class="fa-solid fa-Game-sticky p-[5px]"></i>
-                <a th:data-url="@{|/${Game.Calendar.id}/Games/${Game.id}|}" th:text="${Game.title}"
+                <a th:data-url="@{|/gaems/${game.calendar.id}/matchs/${game.id}|}" th:text="${game.title}"
                    th:class="${itemAnchorClass}"></a>
             </li>
         </ul>
@@ -64,7 +64,7 @@
 
 <dialog th:fragment="renameModal" id="renameModal" class="modal">
     <div class="modal-box flex flex-col items-center">
-        <form th:action="@{|/books/${targetCalendar.id}/update|}" class="flex" method="post">
+        <form th:action="@{|/matchs/${targetCalendar.id}/update|}" class="flex" method="post">
             <input type="hidden" name="targetGameId" th:value="${targetGame.id}">
             <input type="text" name="name" class="border-2" th:value="${targetCalendar.name}">
             <input type="submit" class="btn postActionBtn">
@@ -83,7 +83,7 @@
         <h1>태그 목록</h1>
         <ul class="h-[30%] border-2 overflow-auto flex flex-wrap gap-2">
             <li th:each="tag : ${tagList}" class="w-[20%]">
-                <a th:data-url="@{|/tags/${tag.id}/Games|}" th:text="${tag.name}"
+                <a th:data-url="@{|/tags/${tag.id}/matchs|}" th:text="${tag.name}"
                    class="tagItem p-[15px] h-[100%] w-[100%] inline-block text-[1.2rem]
                    text-center hover:bg-blue-600 hover:text-white"
                    th:classappend="${targetTag != null and targetTag.id == tag.id} ? 'bg-blue-600' : ''"
@@ -92,15 +92,14 @@
         </ul>
         <ul class="h-[50%] border-2 overflow-auto"
             th:with="itemHover='hover:bg-blue-600 hover:text-white p-[10px] flex', itemAnchorClass='getActionBtn inline-block w-[100%]'">
-            <li th:each="Game : ${GameListByTag}" th:class="${itemHover}">
-                <a th:data-url="@{|/books/${Game.Calendar.id}/Games/${Game.id}|}" th:text="${Game.title}"
+            <li th:each="game : ${gameListByTag}" th:class="${itemHover}">
+                <a th:data-url="@{|/matchs/${game.calendar.id}/matchs/${game.id}|}" th:text="${game.title}"
                    th:class="${itemAnchorClass}"></a>
             </li>
         </ul>
         <div class="modal-action">
             <form method="dialog">
                 <button class="btn">Close</button>
-            </form>
         </div>
     </div>
 </dialog>
@@ -108,8 +107,8 @@
     document.querySelectorAll(".tagItem").forEach((tagItem) => {
         tagItem.addEventListener("click", (e) => {
             getAction(e.target, (params) => {
-                params.CalendarId = e.target.dataset.CalendarId;
-                params.GameId = e.target.dataset.GameId;
+                params.calendarId = e.target.dataset.calendarId;
+                params.gameId = e.target.dataset.gameId;
                 params.isTagModal = true;
             });
         });

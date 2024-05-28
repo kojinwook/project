@@ -1,0 +1,48 @@
+<li th:fragment="gameTree(calendarList, targetCalendar)" th:each="calendar : ${calendarList}"
+    th:with="basic='w-[90%] p-[10px]'">
+    <th:block th:if="${!#lists.isEmpty(calendar.children)}">
+        <details open>
+            <summary class="flex p-0"><a th:class="${basic}"
+                                         th:classappend="${calendar.id == targetCalendar.id} ? 'bg-blue-600':''"
+                                         th:href="@{|/matchs/${calendar.id}?keyword=${paramHandler.keyword}&isSearchModal=${paramHandler.isSearchModal}&sort=${paramHandler.sort}|}"
+                                         th:text="${calendar.name}"></a></summary>
+            <ul>
+                <li th:replace="~{fragments/calendar::gameTree(${calendar.children}, ${targetCalendar})}"></li>
+            </ul>
+        </details>
+    </th:block>
+    <th:block th:if="${#lists.isEmpty(calendar.children)}">
+        <a th:class="${basic}"
+           th:classappend="${calendar.id == targetCalendar.id} ? 'bg-blue-600' : '' "
+           th:href="@{|/matchs/${calendar.id}?keyword=${paramHandler.keyword}&isSearchModal=${paramHandler.isSearchModal}&sort=${paramHandler.sort}|}" th:text="${calendar.name}"></a>
+    </th:block>
+</li>
+
+<li th:fragment="moveTree(calendarList, targetCalendar)" th:each="calendar : ${calendarList}"
+    th:with="basic='w-[90%] p-[10px]'">
+    <th:block th:if="${!#lists.isEmpty(calendar.children)}">
+        <details open
+                 th:if="${calendar.id != targetCalendar.id and !#lists.contains(targetCalendar.children, calendar)}">
+            <summary class="flex p-0">
+                <input type="radio" name="destinationId" th:value="${calendar.id}">
+                <a th:class="${basic}"
+                   th:classappend="${calendar.id == targetCalendar.id} ? 'bg-blue-600':''"
+                   href="javascript:void(0)"
+                   th:text="${calendar.name}"></a>
+            </summary>
+            <ul>
+                <li th:replace="~{fragments/calendar::moveTree(${calendar.children}, ${targetCalendar})}"></li>
+            </ul>
+        </details>
+    </th:block>
+    <th:block th:if="${#lists.isEmpty(calendar.children)}">
+        <div th:if="${calendar.id != targetCalendar.id and !#lists.contains(targetCalendar.children, calendar)}"
+             class="flex">
+            <input type="radio" name="destinationId" th:value="${calendar.id}">
+            <a th:class="${basic}"
+               th:classappend="${calendar.id == targetCalendar.id} ? 'bg-blue-600' : '' "
+               href="javascript:void(0)"
+               th:text="${calendar.name}"></a>
+        </div>
+    </th:block>
+</li>
