@@ -1,8 +1,8 @@
 <html lang="ko" layout:decorate="~{layout}">
 <body>
 <div layout:fragment="content"
-     th:with="CalendarList=${mainDataDto.CalendarList},
-        GameList=${mainDataDto.GameList},
+     th:with="calendarList=${mainDataDto.calendarList},
+        gameList=${mainDataDto.gameList},
         targetCalendar=${mainDataDto.targetCalendar},
         targetGame=${mainDataDto.targetGame},
         searchedCalendarList=${mainDataDto.searchedCalendarList},
@@ -37,7 +37,9 @@
     <div class="flex">
         <div class="bg-indigo-300 w-[20%]">
             <ul class="menu h-[100%] overflow-scroll">
-                <li th:replace="~{fragments/Calendar::GameTree(${CalendarList}, ${targetCalendar})}">
+<!--                <li th:replace="~{fragments/Calendar::gameTree(${CalendarList}, ${targetCalendar})}">-->
+                <li th:replace="~{classpath:/templates/main :: moveTree(${CalendarList}, ${targetCalendar})}">
+
             </ul>
 
             <form th:action="@{|/books/write|}" method="post">
@@ -52,21 +54,21 @@
         </div>
         <div class="bg-red-300 w-[20%] h-[800px] text-center ">
             <ul class="h-[100%] overflow-scroll">
-                <li th:each="Game : ${GameList}" th:class="${Game.id == targetGame.id} ? 'bg-blue-600' : ''">
-                    <a th:data-url="@{|/books/${targetCalendar.id}/Games/${Game.id}|}" th:text="${Game.title}"
+                <li th:each="game : ${gameList}" th:class="${game.id == targetGame.id} ? 'bg-blue-600' : ''">
+                    <a th:data-url="@{|/books/${targetCalendar.id}/games/${game.id}|}" th:text="${game.title}"
                        class="getActionBtn"></a>
                 </li>
             </ul>
 
-            <form th:action="@{|/books/${targetCalendar.id}/Games/write|}" method="post">
+            <form th:action="@{|/books/${targetCalendar.id}/games/write|}" method="post">
                 <input type="submit" value="추가" class="postActionBtn">
             </form>
-            <a th:data-url="@{|/books/${targetCalendar.id}/Games/${targetGame.id}|}" class="btn sortDate">날짜순</a>
-            <a th:data-url="@{|/books/${targetCalendar.id}/Games/${targetGame.id}|}" class="btn sortTitle">이름순</a>
+            <a th:data-url="@{|/books/${targetCalendar.id}/games/${targetGame.id}|}" class="btn sortDate">날짜순</a>
+            <a th:data-url="@{|/books/${targetCalendar.id}/games/${targetGame.id}|}" class="btn sortTitle">이름순</a>
         </div>
 
         <div class="w-[60%]">
-            <form th:action="@{|/books/${targetCalendar.id}/Games/${targetGame.id}/update|}" method="post"
+            <form th:action="@{|/books/${targetCalendar.id}/games/${targetGame.id}/update|}" method="post"
                   id="updateForm">
                 <div>
                     <input type="hidden" name="id" th:value="${targetGame.id}">
@@ -80,18 +82,18 @@
                     <input type="button" value="매치 수정" onclick="updateForm()" class="postActionBtn">
                 </div>
             </form>
-            <form th:action="@{|/books/${targetCalendar.id}/Games/${targetGame.id}/delete|}" method="post"
+            <form th:action="@{|/books/${targetCalendar.id}/games/${targetGame.id}/delete|}" method="post"
                   id="deleteForm">
                 <input type="button" value="매치 삭제" onclick="deleteForm();" class="postActionBtn">
             </form>
             <ul class="flex gap-5">
-                <li th:each="GameTag : ${targetGame.GameTagList}">
-                    <form th:action="@{|/Games/${targetGame.id}/tags/${GameTag.id}/delete|}" method="post">
-                        <input type="submit" th:value="${GameTag.tag.name}" class="btn">
+                <li th:each="gameTag : ${targetGame.gameTagList}">
+                    <form th:action="@{|/games/${targetGame.id}/tags/${gameTag.id}/delete|}" method="post">
+                        <input type="submit" th:value="${gameTag.tag.name}" class="btn">
                     </form>
                 </li>
             </ul>
-            <form th:action="@{|/Games/${targetGame.id}/tags/create|}" method="post">
+            <form th:action="@{|/games/${targetGame.id}/tags/create|}" method="post">
                 <input type="text" name="name" class="input input-bordered" placeholder="태그 추가">
                 <input type="submit" class="postActionBtn btn" value="추가">
             </form>
