@@ -1,11 +1,10 @@
-package com.example.project.football.match.tag.tag;
+package com.example.project.football.game.tag.tag;
 
 import com.example.project.football.MainDataDto;
 import com.example.project.football.MainService;
 import com.example.project.football.ParamHandler;
-import com.example.project.football.match.Game;
-import com.example.project.football.match.tag.GameTag;
-import com.example.project.football.match.tag.tag.TagService;
+import com.example.project.football.game.Game;
+import com.example.project.football.game.tag.GameTag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

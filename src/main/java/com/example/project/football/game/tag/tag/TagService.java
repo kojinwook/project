@@ -1,4 +1,4 @@
-package com.example.project.football.match.tag.tag;
+package com.example.project.football.game.tag.tag;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

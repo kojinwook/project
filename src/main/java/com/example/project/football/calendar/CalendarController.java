@@ -2,9 +2,7 @@ package com.example.project.football.calendar;
 
 import com.example.project.football.MainService;
 import com.example.project.football.ParamHandler;
-import com.example.project.football.calendar.Calendar;
-import com.example.project.football.calendar.CalendarService;
-import com.example.project.football.match.Game;
+import com.example.project.football.game.Game;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,7 +1,7 @@
 package com.example.project.football.calendar;
 
 
-import com.example.project.football.match.Game;
+import com.example.project.football.game.Game;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

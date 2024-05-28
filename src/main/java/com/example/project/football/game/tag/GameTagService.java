@@ -1,9 +1,9 @@
-package com.example.project.football.match.tag;
+package com.example.project.football.game.tag;
 
-import com.example.project.football.match.Game;
-import com.example.project.football.match.GameService;
-import com.example.project.football.match.tag.tag.Tag;
-import com.example.project.football.match.tag.tag.TagService;
+import com.example.project.football.game.Game;
+import com.example.project.football.game.GameService;
+import com.example.project.football.game.tag.tag.Tag;
+import com.example.project.football.game.tag.tag.TagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

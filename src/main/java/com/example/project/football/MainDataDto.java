@@ -2,8 +2,8 @@ package com.example.project.football;
 
 
 import com.example.project.football.calendar.Calendar;
-import com.example.project.football.match.Game;
-import com.example.project.football.match.tag.tag.Tag;
+import com.example.project.football.game.Game;
+import com.example.project.football.game.tag.tag.Tag;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

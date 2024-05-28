@@ -1,4 +1,4 @@
-package com.example.project.football.match.tag;
+package com.example.project.football.game.tag;
 
 import com.example.project.football.ParamHandler;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +22,8 @@ public class GameTagController {
 
     @PostMapping("{GameTagId}/delete")
     public String delete(@PathVariable("GameId") Long GameId, @PathVariable("GameTagId") Long GameTagId, ParamHandler paramHandler) {
-        GameTag GameTag = gameTagService.getGameTag(GameTagId);
-        Long calendarId = GameTag.getGame().getCalendar().getId();
+        GameTag gameTag = gameTagService.getGameTag(GameTagId);
+        Long calendarId = gameTag.getGame().getCalendar().getId();
         gameTagService.delete(GameTagId);
 
         return paramHandler.getRedirectUrl("/books/%d/Games/%d".formatted(calendarId, GameId));

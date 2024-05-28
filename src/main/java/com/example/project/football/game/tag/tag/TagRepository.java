@@ -1,4 +1,4 @@
-package com.example.project.football.match.tag.tag;
+package com.example.project.football.game.tag.tag;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

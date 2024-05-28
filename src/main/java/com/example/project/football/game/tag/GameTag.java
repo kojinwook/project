@@ -1,10 +1,10 @@
-package com.example.project.football.match.tag;
+package com.example.project.football.game.tag;
 
-import com.example.project.football.match.Game;
+import com.example.project.football.game.Game;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import com.example.project.football.match.tag.tag.Tag;
+import com.example.project.football.game.tag.tag.Tag;
 
 @Entity
 @Getter

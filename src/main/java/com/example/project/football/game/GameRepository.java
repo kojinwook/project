@@ -1,4 +1,4 @@
-package com.example.project.football.match;
+package com.example.project.football.game;
 
 
 import com.example.project.football.calendar.Calendar;
