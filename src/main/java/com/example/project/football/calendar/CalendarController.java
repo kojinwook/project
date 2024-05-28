@@ -16,44 +16,44 @@ public class CalendarController {
     private final CalendarService calendarService;
     private final MainService mainService;
 
-    @PostMapping("/books/write")
+    @PostMapping("/write")
     public String write(ParamHandler paramHandler) {
         mainService.saveDefaultCalendar();
         return paramHandler.getRedirectUrl("/");
 
     }
 
-    @PostMapping("/groups/{calendarId}/books/write")
+    @PostMapping("/groups/{calendarId}/write")
     public String groupWrite(@PathVariable("calendarId") Long calendarId, ParamHandler paramHandler) {
 
         mainService.saveGroupCalendar(calendarId);
         return paramHandler.getRedirectUrl("/");
     }
 
-    @GetMapping("/books/{id}")
+    @GetMapping("/{id}")
     public String detail(@PathVariable("id") Long id, ParamHandler paramHandler) {
         Calendar calendar = calendarService.getCalendar(id);
         Game game = calendar.getGameList().get(0);
 
-        return paramHandler.getRedirectUrl("/books/%d/Games/%d".formatted(id, game.getId()));
+        return paramHandler.getRedirectUrl("/%d/Games/%d".formatted(id, game.getId()));
     }
 
-    @PostMapping("/books/{id}/delete")
+    @PostMapping("/{id}/delete")
     public String delete(@PathVariable("id") Long id, ParamHandler paramHandler) {
         calendarService.delete(id);
         return paramHandler.getRedirectUrl("/");
     }
 
-    @PostMapping("/books/{id}/update")
+    @PostMapping("/{id}/update")
     public String update(@PathVariable("id") Long id, Long targetGameId, String name, ParamHandler paramHandler) {
         calendarService.updateName(id, name);
-        return paramHandler.getRedirectUrl("/books/%d/Games/%d".formatted(id, targetGameId));
+        return paramHandler.getRedirectUrl("/%d/Games/%d".formatted(id, targetGameId));
     }
 
-    @PostMapping("/books/{id}/move")
+    @PostMapping("/{id}/move")
     public String move(@PathVariable("id") Long id, Long destinationId, Long targetGameId, ParamHandler paramHandler) {
         calendarService.move(id, destinationId);
 
-        return paramHandler.getRedirectUrl("/books/%d/Games/%d".formatted(id, destinationId));
+        return paramHandler.getRedirectUrl("/%d/Games/%d".formatted(id, destinationId));
     }
 }

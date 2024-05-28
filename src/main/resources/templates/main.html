@@ -37,16 +37,14 @@
     <div class="flex">
         <div class="bg-indigo-300 w-[20%]">
             <ul class="menu h-[100%] overflow-scroll">
-<!--                <li th:replace="~{fragments/Calendar::gameTree(${CalendarList}, ${targetCalendar})}">-->
-                <li th:replace="~{classpath:/templates/main :: moveTree(${CalendarList}, ${targetCalendar})}">
-
+                <li th:replace="~{fragments/Calendar::gameTree(${CalendarList}, ${targetCalendar})}">
             </ul>
 
-            <form th:action="@{|/books/write|}" method="post">
+            <form th:action="@{|/write|}" method="post">
                 <input type="submit" value="구장 추가" class="postActionBtn">
             </form>
 
-            <form th:action="@{|/books/${targetCalendar.id}/delete|}" method="post">
+            <form th:action="@{|/${targetCalendar.id}/delete|}" method="post">
                 <input type="submit" value="구장 삭제" class="postActionBtn">
             </form>
 
@@ -55,20 +53,20 @@
         <div class="bg-red-300 w-[20%] h-[800px] text-center ">
             <ul class="h-[100%] overflow-scroll">
                 <li th:each="game : ${gameList}" th:class="${game.id == targetGame.id} ? 'bg-blue-600' : ''">
-                    <a th:data-url="@{|/books/${targetCalendar.id}/games/${game.id}|}" th:text="${game.title}"
+                    <a th:data-url="@{|/${targetCalendar.id}/games/${game.id}|}" th:text="${game.title}"
                        class="getActionBtn"></a>
                 </li>
             </ul>
 
-            <form th:action="@{|/books/${targetCalendar.id}/games/write|}" method="post">
+            <form th:action="@{|/${targetCalendar.id}/games/write|}" method="post">
                 <input type="submit" value="추가" class="postActionBtn">
             </form>
-            <a th:data-url="@{|/books/${targetCalendar.id}/games/${targetGame.id}|}" class="btn sortDate">날짜순</a>
-            <a th:data-url="@{|/books/${targetCalendar.id}/games/${targetGame.id}|}" class="btn sortTitle">이름순</a>
+            <a th:data-url="@{|/${targetCalendar.id}/games/${targetGame.id}|}" class="btn sortDate">날짜순</a>
+            <a th:data-url="@{|/${targetCalendar.id}/games/${targetGame.id}|}" class="btn sortTitle">이름순</a>
         </div>
 
         <div class="w-[60%]">
-            <form th:action="@{|/books/${targetCalendar.id}/games/${targetGame.id}/update|}" method="post"
+            <form th:action="@{|/${targetCalendar.id}/games/${targetGame.id}/update|}" method="post"
                   id="updateForm">
                 <div>
                     <input type="hidden" name="id" th:value="${targetGame.id}">
@@ -82,7 +80,7 @@
                     <input type="button" value="매치 수정" onclick="updateForm()" class="postActionBtn">
                 </div>
             </form>
-            <form th:action="@{|/books/${targetCalendar.id}/games/${targetGame.id}/delete|}" method="post"
+            <form th:action="@{|/${targetCalendar.id}/games/${targetGame.id}/delete|}" method="post"
                   id="deleteForm">
                 <input type="button" value="매치 삭제" onclick="deleteForm();" class="postActionBtn">
             </form>

@@ -51,7 +51,70 @@
         .contact-form button:hover {
             background-color: #0056b3;
         }
+        .error-message {
+            color: red;
+            margin-top: -10px; /* 오류 메시지를 label 위로 올립니다 */
+            display: block; /* 블록 요소로 설정하여 다른 요소와 겹치지 않도록 합니다 */
+        }
     </style>
+
+    <script>
+        function validateForm(event) {
+    var name = document.getElementById('name');
+    var nameError = document.getElementById('nameError');
+    var phone = document.getElementById('phone');
+    var phoneError = document.getElementById('phoneError');
+    var subject = document.getElementById('subject');
+    var subjectError = document.getElementById('subjectError');
+    var content = document.getElementById('content');
+    var contentError = document.getElementById('contentError');
+    var valid = true;
+
+    nameError.textContent = '';
+    phoneError.textContent = '';
+    subjectError.textContent = '';
+    contentError.textContent = '';
+
+    if (!name.value.trim()) {
+        nameError.textContent = '이름을 입력해주세요';
+        name.focus();
+        valid = false;
+    }
+
+    var phonePattern = /^\d{3}-\d{3,4}-\d{4}$/;
+    if (!phone.value.trim()) {
+        phoneError.textContent = '문의하시는분의 전화번호를 입력해주세요';
+        phone.focus();
+        valid = false;
+    } else if (!phonePattern.test(phone.value.trim())) {
+        phoneError.textContent = '유효한 전화번호 형식(예: 010-1234-5678)을 입력해주세요.';
+        phone.focus();
+        valid = false;
+    }
+
+    if (!subject.value.trim()) {
+        subjectError.textContent = '제목을 입력해주세요';
+        subject.focus();
+        valid = false;
+    }
+
+    if (!content.value.trim()) {
+        contentError.textContent = '문의하실 내용을 입력해주세요';
+        content.focus();
+        valid = false;
+    } else if (content.value.trim().length > 200) {
+        contentError.textContent = '내용은 200글자 이내로 작성해주세요.';
+        content.focus();
+        valid = false;
+    }
+
+    if (!valid) {
+        event.preventDefault();
+    }
+}
+
+    </script>
+
 </head>
 <body>
 <div class="container">
@@ -64,18 +127,22 @@
     </div>
     <div class="contact-form">
         <h2>문의하기</h2>
-        <form th:action="@{/submit-form}" method="post">
+        <form th:action="@{/submit}" method="post" onsubmit="validateForm(event)">
             <label for="name">이름</label>
-            <input type="text" id="name" name="name" required>
+            <input type="text" id="name" name="name">
+            <div id="nameError" class="error-message"></div>
 
-            <label for="email">이메일</label>
-            <input type="email" id="email" name="email" required>
+            <label for="phone">전화번호</label>
+            <input type="tel" id="phone" name="phone">
+            <div id="phoneError" class="error-message"></div>
 
             <label for="subject">제목</label>
-            <input type="text" id="subject" name="subject" required>
+            <input type="text" id="subject" name="subject" >
+            <div id="subjectError" class="error-message"></div>
 
-            <label for="message">메시지</label>
-            <textarea id="message" name="message" rows="5" required></textarea>
+            <label for="content">문의 내용</label>
+            <textarea id="content" name="content" rows="5" ></textarea>
+            <div id="contentError" class="error-message"></div>
 
             <button type="submit">보내기</button>
         </form>
@@ -83,3 +150,4 @@
 </div>
 </body>
 </html>
+

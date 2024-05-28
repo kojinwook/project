@@ -17,7 +17,7 @@ public class GameTagController {
     public String create(@PathVariable("GameId") Long GameId, String name, ParamHandler paramHandler) {
         GameTag GameTag = gameTagService.create(GameId, name);
         Long calendarId = GameTag.getGame().getCalendar().getId();
-        return paramHandler.getRedirectUrl("/books/%d/Games/%d".formatted(calendarId, GameId));
+        return paramHandler.getRedirectUrl("/%d/Games/%d".formatted(calendarId, GameId));
     }
 
     @PostMapping("{GameTagId}/delete")
@@ -26,6 +26,6 @@ public class GameTagController {
         Long calendarId = gameTag.getGame().getCalendar().getId();
         gameTagService.delete(GameTagId);
 
-        return paramHandler.getRedirectUrl("/books/%d/Games/%d".formatted(calendarId, GameId));
+        return paramHandler.getRedirectUrl("/%d/Games/%d".formatted(calendarId, GameId));
     }
 }

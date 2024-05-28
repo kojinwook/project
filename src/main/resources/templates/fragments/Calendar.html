@@ -1,10 +1,10 @@
-<li th:fragment="GameTree(CalendarList, targetCalendar)" th:each="Calendar : ${CalendarList}"
+<li th:fragment="gameTree(CalendarList, targetCalendar)" th:each="Calendar : ${CalendarList}"
     th:with="basic='w-[90%] p-[10px]'">
     <th:block th:if="${!#lists.isEmpty(Calendar.children)}">
         <details open>
             <summary class="flex p-0"><a th:class="${basic}"
                                          th:classappend="${Calendar.id == targetCalendar.id} ? 'bg-blue-600':''"
-                                         th:href="@{|/books/${Calendar.id}?keyword=${paramHandler.keyword}&isSearchModal=${paramHandler.isSearchModal}&sort=${paramHandler.sort}|}"
+                                         th:href="@{|/${Calendar.id}?keyword=${paramHandler.keyword}&isSearchModal=${paramHandler.isSearchModal}&sort=${paramHandler.sort}|}"
                                          th:text="${Calendar.name}"></a></summary>
             <ul>
                 <li th:replace="~{fragments/Calendar::GameTree(${Calendar.children}, ${targetCalendar})}"></li>
@@ -14,7 +14,7 @@
     <th:block th:if="${#lists.isEmpty(Calendar.children)}">
         <a th:class="${basic}"
            th:classappend="${Calendar.id == targetCalendar.id} ? 'bg-blue-600' : '' "
-           th:href="@{|/books/${Calendar.id}?keyword=${paramHandler.keyword}&isSearchModal=${paramHandler.isSearchModal}&sort=${paramHandler.sort}|}" th:text="${Calendar.name}"></a>
+           th:href="@{|/${Calendar.id}?keyword=${paramHandler.keyword}&isSearchModal=${paramHandler.isSearchModal}&sort=${paramHandler.sort}|}" th:text="${Calendar.name}"></a>
     </th:block>
 </li>
 

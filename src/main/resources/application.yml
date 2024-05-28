@@ -2,7 +2,7 @@ server:
     port: 8999
 spring:
     application:
-        name: project
+        name: ms1
     datasource:
         driverClassName: com.mysql.cj.jdbc.Driver
         password: ''

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/books/{CalendarId}/Games")
+@RequestMapping("/{CalendarId}/Games")
 public class GameController {
 
     private final GameService GameService;
@@ -47,7 +47,7 @@ public class GameController {
         game.setContent(content);
 
         GameService.save(game);
-        return paramHandler.getRedirectUrl("/books/%d/Games/%d".formatted(calendarId, id));
+        return paramHandler.getRedirectUrl("/%d/Games/%d".formatted(calendarId, id));
     }
 
     @PostMapping("/{id}/delete")

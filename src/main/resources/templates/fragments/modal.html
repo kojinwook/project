@@ -1,6 +1,6 @@
 <dialog th:fragment="moveModal" id="moveModal" class="modal">
     <div class="modal-box">
-        <form th:action="@{|/books/${targetCalendar.id}/move|}" method="post">
+        <form th:action="@{|/${targetCalendar.id}/move|}" method="post">
             <div>
                 <ul class="menu h-[100%] overflow-scroll">
                     <li th:replace="~{fragments/Calendar::moveTree(${CalendarList}, ${targetCalendar})}">
@@ -35,12 +35,12 @@
             th:with="itemHover='hover:bg-blue-600 hover:text-white p-[10px] flex', itemAnchorClass='getActionBtn inline-block w-[100%]'">
             <li th:each="Calendar : ${searchedCalendarList}" th:class="${itemHover}">
                 <i class="fa-solid fa-book p-[5px]"></i>
-                <a th:data-url="@{|/books/${Calendar.id}|}" th:text="${Calendar.name}"
+                <a th:data-url="@{|/${Calendar.id}|}" th:text="${Calendar.name}"
                    th:class="${itemAnchorClass}"></a>
             </li>
             <li th:each="Game : ${searchedGameList}" th:class="${itemHover}">
                 <i class="fa-solid fa-Game-sticky p-[5px]"></i>
-                <a th:data-url="@{|/books/${Game.Calendar.id}/Games/${Game.id}|}" th:text="${Game.title}"
+                <a th:data-url="@{|/${Game.Calendar.id}/Games/${Game.id}|}" th:text="${Game.title}"
                    th:class="${itemAnchorClass}"></a>
             </li>
         </ul>
