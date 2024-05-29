@@ -40,7 +40,7 @@
             </li>
             <li th:each="game : ${searchedGameList}" th:class="${itemHover}">
                 <i class="fa-solid fa-Game-sticky p-[5px]"></i>
-                <a th:data-url="@{|/gaems/${game.calendar.id}/matchs/${game.id}|}" th:text="${game.title}"
+                <a th:data-url="@{|/matchs/${game.calendar.id}/games/${game.id}|}" th:text="${game.title}"
                    th:class="${itemAnchorClass}"></a>
             </li>
         </ul>
@@ -83,23 +83,24 @@
         <h1>태그 목록</h1>
         <ul class="h-[30%] border-2 overflow-auto flex flex-wrap gap-2">
             <li th:each="tag : ${tagList}" class="w-[20%]">
-                <a th:data-url="@{|/tags/${tag.id}/matchs|}" th:text="${tag.name}"
+                <a th:data-url="@{|/tags/${tag.id}/games|}" th:text="${tag.name}"
                    class="tagItem p-[15px] h-[100%] w-[100%] inline-block text-[1.2rem]
                    text-center hover:bg-blue-600 hover:text-white"
                    th:classappend="${targetTag != null and targetTag.id == tag.id} ? 'bg-blue-600' : ''"
-                   th:data-Calendar-id="${targetCalendar.id}" th:data-Game-id="${targetGame.id}"></a>
+                   th:data-notebook-id="${targetCalendar.id}" th:data-note-id="${targetGame.id}"></a>
             </li>
         </ul>
         <ul class="h-[50%] border-2 overflow-auto"
             th:with="itemHover='hover:bg-blue-600 hover:text-white p-[10px] flex', itemAnchorClass='getActionBtn inline-block w-[100%]'">
             <li th:each="game : ${gameListByTag}" th:class="${itemHover}">
-                <a th:data-url="@{|/matchs/${game.calendar.id}/matchs/${game.id}|}" th:text="${game.title}"
+                <a th:data-url="@{|/matchs/${game.calendar.id}/games/${game.id}|}" th:text="${game.title}"
                    th:class="${itemAnchorClass}"></a>
             </li>
         </ul>
         <div class="modal-action">
             <form method="dialog">
                 <button class="btn">Close</button>
+            </form>
         </div>
     </div>
 </dialog>
