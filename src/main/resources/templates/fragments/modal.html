@@ -87,7 +87,7 @@
                    class="tagItem p-[15px] h-[100%] w-[100%] inline-block text-[1.2rem]
                    text-center hover:bg-blue-600 hover:text-white"
                    th:classappend="${targetTag != null and targetTag.id == tag.id} ? 'bg-blue-600' : ''"
-                   th:data-notebook-id="${targetCalendar.id}" th:data-note-id="${targetGame.id}"></a>
+                   th:data-calendar-id="${targetCalendar.id}" th:data-game-id="${targetGame.id}"></a>
             </li>
         </ul>
         <ul class="h-[50%] border-2 overflow-auto"

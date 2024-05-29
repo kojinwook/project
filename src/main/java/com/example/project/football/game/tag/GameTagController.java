@@ -20,7 +20,7 @@ public class GameTagController {
         return paramHandler.getRedirectUrl("/matchs/%d/games/%d".formatted(calendarId, gameId));
     }
 
-    @PostMapping("/matchs/{gameTagId}/delete")
+    @PostMapping("/{gameTagId}/delete")
     public String delete(@PathVariable("gameId") Long gameId, @PathVariable("gameTagId") Long gameTagId, ParamHandler paramHandler) {
         GameTag gameTag = gameTagService.getGameTag(gameTagId);
         Long calendarId = gameTag.getGame().getCalendar().getId();

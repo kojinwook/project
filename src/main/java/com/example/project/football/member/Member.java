@@ -1,5 +1,6 @@
 package com.example.project.football.member;
 
+import com.example.project.football.apply.Apply;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,5 +22,7 @@ public class Member {
     @Column(unique = true)
     private String email;
     private LocalDateTime createDate;
+
+
 
 }

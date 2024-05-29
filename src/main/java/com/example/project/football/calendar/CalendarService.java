@@ -43,5 +43,8 @@ public class CalendarService {
     public List<Calendar> getSearchedCalendarList(String keyword) {
         return calendarRepository.findByNameContaining(keyword);
     }
+    public  Calendar getCalendarById(Long id){
+        return calendarRepository.getCalendarById(id);
+    }
 }
 

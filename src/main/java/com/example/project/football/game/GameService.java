@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -30,12 +31,18 @@ public class GameService {
         return gameRepository.findById(id).orElseThrow();
     }
 
-    public List<Game> getGameListByCalendar(Calendar targetCalendar) {
-        return gameRepository.findByCalendar(targetCalendar);
-    }
+//    public List<Game> getGameListByCalendar(Calendar targetCalendar) {
+//        return gameRepository.findByCalendar(targetCalendar);
+//    }
+//    public List<Game> findAll() {
+//        return gameRepository.findAll();
+//    }
 
-    public void save(Game Game) {
-        gameRepository.save(Game);
+    public Optional<Game> findById(Long id) {
+        return gameRepository.findById(id);
+    }
+    public Game save(Game Game) {
+        return gameRepository.save(Game);
     }
 
     public void delete(Long id) {

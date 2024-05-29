@@ -8,4 +8,5 @@ public interface CalendarRepository extends JpaRepository<Calendar, Long>{
 
 
     List<Calendar> findByNameContaining(String keyword);
+    Calendar getCalendarById(Long id);
 }

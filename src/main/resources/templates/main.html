@@ -47,12 +47,10 @@
             <form th:action="@{|/matchs/${targetCalendar.id}/delete|}" method="post">
                 <input type="submit" value="구장 삭제" class="postActionBtn">
             </form>
-
-
         </div>
-        <div class="bg-red-300 w-[20%] h-[800px] text-center ">
+        <div class="bg-red-300 w-[20%] h-[800px] text-center">
             <ul class="h-[100%] overflow-scroll">
-                <li th:each="game : ${gameList}" th:class="${game.id == targetGame.id} ? 'bg-blue-600' : ''">
+                <li th:each="game: ${gameList}" th:class="${game.id == targetGame.id} ? 'bg-blue-600' : ''">
                     <a th:data-url="@{|/matchs/${targetCalendar.id}/games/${game.id}|}" th:text="${game.title}"
                        class="getActionBtn"></a>
                 </li>
@@ -63,7 +61,6 @@
             </form>
             <a th:data-url="@{|/matchs/${targetCalendar.id}/games/${targetGame.id}|}" class="btn sortDate">날짜순</a>
             <a th:data-url="@{|/matchs/${targetCalendar.id}/games/${targetGame.id}|}" class="btn sortTitle">이름순</a>
-
         </div>
         <div class="w-[60%]">
             <form th:action="@{|/matchs/${targetCalendar.id}/games/${targetGame.id}/update|}" method="post"
@@ -79,6 +76,38 @@
                 <div>
                     <input type="button" value="매치 수정" onclick="updateForm()" class="postActionBtn">
                 </div>
+            </form>
+            <h5 th:text="|${#lists.size(targetGame.applyList)}개의 신청이 있습니다.|" style="font-weight: bold; color: red;"></h5>
+<!--            <div th:if="${apply.modifyDate != null}" class="badge bg-light text-dark p-2 text-start mx-3">-->
+<!--                <div class="mb-2">modified at</div>-->
+<!--                <div th:text="${#temporals.format(apply.modifyDate, 'yyyy-MM-dd HH:mm')}"></div>-->
+<!--            </div>-->
+            <div>
+                <ul>
+                    <li th:each="apply, index : ${targetGame.applyList}" style="font-weight: bold; color: blue;">
+                        <span th:text="${apply.content}"></span>
+                        <form th:action="@{|/apply/delete/${apply.id}|}" method="post">
+                            <input type="hidden" name="gameId" th:value="${targetGame.id}">
+                            <input type="hidden" name="applyIndex" th:value="${index.index}">
+                            <button type="submit" style="background-color: red; color: white;">삭제</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+            <div>
+<!--                <a th:href="@{|/apply/modify/${apply.id}|}" class="btn btn-sm btn-outline-secondary"-->
+<!--                   sec:authorize="isAuthenticated()"-->
+<!--                   th:if="${apply.author != null and #authentication.getPrincipal().getLoginId() == apply.author.loginId}"-->
+<!--                   th:text="수정"></a>-->
+<!--                <a href="javascript:void(0);" th:data-uri="@{|/apply/delete/${apply.id}|}"-->
+<!--                   class="delete btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"-->
+<!--                   th:if="${apply.author != null and #authentication.getPrincipal().getLoginId() == apply.author.loginId}"-->
+<!--                   th:text="삭제"></a>-->
+            </div>
+
+            <form th:action="@{|/apply/create/${targetGame.id}|}" method="post">
+                <textarea name="content" id="content" rows="5" style="width: 100%;"></textarea>
+                <input type="submit" value="신청">
             </form>
             <form th:action="@{|/matchs/${targetCalendar.id}/games/${targetGame.id}/delete|}" method="post"
                   id="deleteForm">
@@ -171,57 +200,4 @@
             const form = button.form;
             const params = getDefaultParam();
             const exParams = [];
-            form.querySelectorAll("input").forEach((input) => {
-                if (input.name !== null && input.type !== "submit") {
-                    exParams.push(input.name);
-                }
-            });
-            if (callback !== null)
-                callback(params);
-            Object.entries(params).forEach(([key, value]) => {
-                if (exParams.includes(key)) {
-                    return;
-                }
-                const input = document.createElement("input");
-                input.setAttribute("type", "hidden");
-                input.setAttribute("name", key);
-                input.setAttribute("value", value);
-                form.appendChild(input);
-            });
-
-            form.submit();
-        }
-        function getAction(link, callback = null) {
-            const url = link.dataset.url;
-            const params = getDefaultParam();
-            if (callback !== null)
-                callback(params);
-            const queryString = new URLSearchParams(params).toString();
-            location.href = url + '?' + queryString;
-        }
-        function getDefaultParam() {
-            const paramInputList = document.querySelectorAll("#params input");
-            const params = {};
-            paramInputList.forEach((input) => {
-                params[input.name] = input.value;
-            });
-            return params;
-        }
-
-        function toggleMenu() {
-    var menuList = document.getElementById("menuList");
-    if (menuList.classList.contains("hidden")) {
-        menuList.classList.remove("hidden");
-         menuList.style.zIndex = "999";
-    } else {
-        menuList.classList.add("hidden");
-    }
-}
-
-
-    </script>
-    <script th:replace="~{fragments/modal::searchModalJs}" />
-    <script th:replace="~{fragments/modal::tagModalJs}" />
-</div>
-</body>
-</html>
+            form.querySelectorAll("input").forEach((input

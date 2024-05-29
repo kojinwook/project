@@ -4,10 +4,14 @@ import com.example.project.football.MainService;
 import com.example.project.football.ParamHandler;
 import com.example.project.football.game.Game;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -55,5 +59,14 @@ public class CalendarController {
         calendarService.move(id, destinationId);
 
         return paramHandler.getRedirectUrl("/matchs/%d/games/%d".formatted(id, destinationId));
+    }
+    @GetMapping("/{calendarId}/games")
+    public ResponseEntity<List<Game>> getGamesByCalendarId(@PathVariable("calendarId") Long calendarId) {
+        Calendar calendar = calendarService.getCalendarById(calendarId);
+        if (calendar == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        List<Game> games = calendar.getGameList();
+        return new ResponseEntity<>(games, HttpStatus.OK);
     }
 }
