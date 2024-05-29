@@ -17,29 +17,34 @@ import java.util.Optional;
 public class ApplyService {
     private final ApplyRepository applyRepository;
     private final MemberRepository memberRepository;
-    public void create(Game game,String content){
+    public void create(Game game,String loginId,String content,String phone){
         Apply apply = new Apply();
+        apply.setLoginId(loginId);
         apply.setContent(content);
+        apply.setPhone(phone);
         apply.setCreateDate(LocalDateTime.now());
         apply.setGame(game);
         this.applyRepository.save(apply);
     }
 
-    public Apply getApply(Long id) {
-        Optional<Apply> apply = this.applyRepository.findById(id);
-        if (apply.isPresent()) {
-            return apply.get();
-        } else {
-            throw new DataNotFoundException("apply not found");
-        }
-    }
-    public void delete(Apply apply) {
-        this.applyRepository.delete(apply);
-    }
-    public void modify(Apply apply, String content) {
-        apply.setContent(content);
-        apply.setModifyDate(LocalDateTime.now());
-        this.applyRepository.save(apply);
+//    public Apply getApply(Long id) {
+//        Optional<Apply> apply = this.applyRepository.findById(id);
+//        if (apply.isPresent()) {
+//            return apply.get();
+//        } else {
+//            throw new DataNotFoundException("apply not found");
+//        }
+//    }
+//    public void delete(Apply apply) {
+//        this.applyRepository.delete(apply);
+//    }
+//    public void modify(Apply apply, String content) {
+//        apply.setContent(content);
+//        apply.setModifyDate(LocalDateTime.now());
+//        this.applyRepository.save(apply);
+//    }
+    public void save(Apply apply){
+        applyRepository.save(apply);
     }
 
 

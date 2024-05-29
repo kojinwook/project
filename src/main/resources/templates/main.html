@@ -98,16 +98,7 @@
 
                 </ul>
             </div>
-<!--            <div>-->
-<!--                <a th:href="@{|/apply/modify/${apply.id}|}" class="btn btn-sm btn-outline-secondary"-->
-<!--                   sec:authorize="isAuthenticated()"-->
-<!--                   th:if="${apply.author != null and #authentication.getPrincipal().getLoginId() == apply.author.loginId}"-->
-<!--                   th:text="수정"></a>-->
-<!--                <a href="javascript:void(0);" th:data-uri="@{|/apply/delete/${apply.id}|}"-->
-<!--                   class="delete btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"-->
-<!--                   th:if="${apply.author != null and #authentication.getPrincipal().getLoginId() == apply.author.loginId}"-->
-<!--                   th:text="삭제"></a>-->
-<!--            </div>-->
+
 
             <form th:action="@{|/apply/create/${targetGame.id}|}" method="post">
                 <textarea name="content" id="content" rows="5" style="width: 100%;"></textarea>

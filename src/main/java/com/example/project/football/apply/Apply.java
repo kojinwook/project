@@ -19,12 +19,14 @@ public class Apply {
     private String loginId;
     @Column(columnDefinition = "TEXT")
     private String content;
-    private String nickname;
+    private String phone;
     private LocalDateTime createDate;
     @ManyToOne(fetch = FetchType.LAZY)
     private Game game;
-    @ManyToOne
-    private Member author;
+
+//    @ManyToOne
+//    private Member author;
+
     private LocalDateTime modifyDate;
 
 
