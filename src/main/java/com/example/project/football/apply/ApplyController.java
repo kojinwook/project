@@ -36,9 +36,6 @@ public class ApplyController {
     @PostMapping("/delete/{id}")
     public String applyDelete(Principal principal, @PathVariable("id") Long id) {
         Apply apply = this.applyService.getApply(id);
-        if (!apply.getAuthor().getLoginId().equals(principal.getName())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다.");
-        }
         this.applyService.delete(apply);
         return "redirect:/";
     }
@@ -46,11 +43,8 @@ public class ApplyController {
     @GetMapping("/modify/{id}")
     public String answerModify(ApplyForm applyForm, @PathVariable("id") Long id, Principal principal) {
         Apply apply = this.applyService.getApply(id);
-        if (!apply.getAuthor().getLoginId().equals(principal.getName())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
-        }
         applyForm.setContent(apply.getContent());
-        return "redirect:/";
+        return "modify";
     }
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/modify/{id}")

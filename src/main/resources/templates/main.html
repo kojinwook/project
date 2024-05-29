@@ -78,10 +78,10 @@
                 </div>
             </form>
             <h5 th:text="|${#lists.size(targetGame.applyList)}개의 신청이 있습니다.|" style="font-weight: bold; color: red;"></h5>
-<!--            <div th:if="${apply.modifyDate != null}" class="badge bg-light text-dark p-2 text-start mx-3">-->
-<!--                <div class="mb-2">modified at</div>-->
-<!--                <div th:text="${#temporals.format(apply.modifyDate, 'yyyy-MM-dd HH:mm')}"></div>-->
-<!--            </div>-->
+            <div th:if="${apply.modifyDate != null}" class="badge bg-light text-dark p-2 text-start mx-3">
+                <div class="mb-2">modified at</div>
+                <div th:text="${#temporals.format(apply.modifyDate, 'yyyy-MM-dd HH:mm')}"></div>
+            </div>
             <div>
                 <ul>
                     <li th:each="apply, index : ${targetGame.applyList}" style="font-weight: bold; color: blue;">
@@ -91,10 +91,14 @@
                             <input type="hidden" name="applyIndex" th:value="${index.index}">
                             <button type="submit" style="background-color: red; color: white;">삭제</button>
                         </form>
+                        <form th:action="@{|/apply/modify/${apply.id}|}">
+                            <button style="background-color: red; color: white;">수정</button>
+                        </form>
                     </li>
+
                 </ul>
             </div>
-            <div>
+<!--            <div>-->
 <!--                <a th:href="@{|/apply/modify/${apply.id}|}" class="btn btn-sm btn-outline-secondary"-->
 <!--                   sec:authorize="isAuthenticated()"-->
 <!--                   th:if="${apply.author != null and #authentication.getPrincipal().getLoginId() == apply.author.loginId}"-->
@@ -103,7 +107,7 @@
 <!--                   class="delete btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"-->
 <!--                   th:if="${apply.author != null and #authentication.getPrincipal().getLoginId() == apply.author.loginId}"-->
 <!--                   th:text="삭제"></a>-->
-            </div>
+<!--            </div>-->
 
             <form th:action="@{|/apply/create/${targetGame.id}|}" method="post">
                 <textarea name="content" id="content" rows="5" style="width: 100%;"></textarea>
@@ -200,4 +204,57 @@
             const form = button.form;
             const params = getDefaultParam();
             const exParams = [];
-            form.querySelectorAll("input").forEach((input
+            form.querySelectorAll("input").forEach((input) => {
+                if (input.name !== null && input.type !== "submit") {
+                    exParams.push(input.name);
+                }
+            });
+            if (callback !== null)
+                callback(params);
+            Object.entries(params).forEach(([key, value]) => {
+                if (exParams.includes(key)) {
+                    return;
+                }
+                const input = document.createElement("input");
+                input.setAttribute("type", "hidden");
+                input.setAttribute("name", key);
+                input.setAttribute("value", value);
+                form.appendChild(input);
+            });
+
+            form.submit();
+        }
+        function getAction(link, callback = null) {
+            const url = link.dataset.url;
+            const params = getDefaultParam();
+            if (callback !== null)
+                callback(params);
+            const queryString = new URLSearchParams(params).toString();
+            location.href = url + '?' + queryString;
+        }
+        function getDefaultParam() {
+            const paramInputList = document.querySelectorAll("#params input");
+            const params = {};
+            paramInputList.forEach((input) => {
+                params[input.name] = input.value;
+            });
+            return params;
+        }
+
+        function toggleMenu() {
+    var menuList = document.getElementById("menuList");
+    if (menuList.classList.contains("hidden")) {
+        menuList.classList.remove("hidden");
+         menuList.style.zIndex = "999";
+    } else {
+        menuList.classList.add("hidden");
+    }
+}
+
+
+    </script>
+    <script th:replace="~{fragments/modal::searchModalJs}" />
+    <script th:replace="~{fragments/modal::tagModalJs}" />
+</div>
+</body>
+</html>
