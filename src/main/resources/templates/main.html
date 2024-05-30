@@ -18,6 +18,7 @@
     <nav class="bg-blue-300 p-4">
         <div class="container mx-auto flex justify-between items-center">
             <a href="/" class="text-white text-lg font-bold">풋살 모임</a>
+            <h1>Total : <span th:text="${count}"></span></h1>
             <ul class="flex space-x-4">
                 <li><a href="/" class=" btn w-[90px]" style="background-color: gray;">홈</a></li>
                 <li><a href="/inquiry" class=" btn w-[100px]"  style="background-color: gray;">고객센터</a></li>
@@ -36,7 +37,7 @@
     </nav>
 
     <div class="flex">
-        <div class="bg-indigo-300 w-[20%]">
+        <div class="bg-indigo-300 w-[10%]">
             <ul class="menu h-[100%] overflow-scroll">
                 <li th:replace="~{fragments/calendar::gameTree(${calendarList}, ${targetCalendar})}">
             </ul>
@@ -50,10 +51,11 @@
             </form>
         </div>
         <div class="bg-red-300 w-[20%] h-[800px] text-center">
-            <ul class="h-[100%] overflow-scroll">
-                <li th:each="game: ${gameList}" th:class="${game.id == targetGame.id} ? 'bg-blue-600' : ''">
-                    <a th:data-url="@{|/matchs/${targetCalendar.id}/games/${game.id}|}" th:text="${game.title}"
-                       class="getActionBtn"></a>
+            <ul class="h-[100%] overflow-auto">
+                <li th:each="game: ${gameList}" th:class="${game.id == targetGame.id} ? 'bg-blue-600' : ''" class="mb-8">
+                    <a th:data-url="@{|/matchs/${targetCalendar.id}/games/${game.id}|}"
+                       th:text="${game.title}"
+                       class="getActionBtn font-bold text-lg block"></a>
                 </li>
             </ul>
 
@@ -63,31 +65,34 @@
             <a th:data-url="@{|/matchs/${targetCalendar.id}/games/${targetGame.id}|}" class="btn sortDate">날짜순</a>
             <a th:data-url="@{|/matchs/${targetCalendar.id}/games/${targetGame.id}|}" class="btn sortTitle">이름순</a>
         </div>
-        <div class="w-[60%]">
+
+
+        <div class="w-[70%]">
             <form th:action="@{|/matchs/${targetCalendar.id}/games/${targetGame.id}/update|}" method="post"
                   id="updateForm">
                 <div>
                     <input type="hidden" name="id" th:value="${targetGame.id}">
                 </div>
                 <div>
-                    <input type="text" name="title" th:value="${targetGame.title}">
+                    <input type="text" name="title" th:value="${targetGame.title}" size="50">
                 </div>
                 <input type="hidden" name="content" id="editor-body">
                 <div id="editor"></div>
 
-                <h5 th:if="${#lists.size(targetGame.applyList) > 16}">
+                <h5 th:if="${#lists.size(mainDataDto.targetGame.applyList) > 5}">
                     <span style="font-weight: bold; color: red;">매치 신청이 마감되었습니다.</span>
                 </h5>
-                <h5 th:text="|${#lists.size(targetGame.applyList)}개의 신청이 있습니다.|" style="font-weight: bold; color: red;"></h5>
+                <h5 th:text="|${#lists.size(mainDataDto.targetGame.applyList)}개의 신청이 있습니다.|" style="font-weight: bold; color: red;"></h5>
 
-                <div th:each="apply : ${targetGame.applyList}">
-
-                    <p th:text="${apply.content}"></p>
+                <div th:each="apply : ${mainDataDto.targetGame.applyList}">
+                    <p>신청자 닉네임:
+                        <span th:text="${apply.nickName}"></span>
+                    </p>
                 </div>
 
-                <form th:action="@{/apply}" method="post" id="applyForm">
+                <form th:action="@{|/apply/${mainDataDto.targetGame.id}|}" method="post" id="applyForm">
                 </form>
-                <a href="/apply" class="btn w-[100px]" style="background-color: gray;" onclick="submitApplyForm()">매치 신청</a>
+                <a href="#" class="btn w-[100px]" style="background-color: gray;" onclick="submitApplyForm()">매치 신청</a>
 
                 <div>
                     <input type="button" value="매치 수정" onclick="updateForm()" class="postActionBtn">
@@ -147,11 +152,14 @@
                 form.submit();
             }
         }
-        function submitApplyForm() {
-           var form = document.getElementById("applyForm");
 
-        // 폼을 서버로 제출
-        form.submit();
+        function submitApplyForm() {
+            const applyListSize = /*[[${#lists.size(mainDataDto.targetGame.applyList)}]]*/ 0;
+            if (applyListSize > 5) {
+                alert("매치 신청이 마감되었습니다.");
+            } else {
+                document.getElementById('applyForm').submit();
+            }
         }
     </script>
     <script>

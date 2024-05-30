@@ -13,4 +13,7 @@ public class InquiryService {
         return inquiryRepository.save(inquiry);
     }
 
+    public Long getCount() {
+        return inquiryRepository.count();
+    }
 }

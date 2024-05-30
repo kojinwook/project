@@ -18,10 +18,14 @@ public class GameService {
     public Game saveDefault() {
         Game game = new Game();
         game.setTitle("새로운 매치");
-        game.setContent(" 날짜 : \n" +
-                " 장소 : \n" +
-                " 시간 : \n" +
-                " 구장 정보 : \n ");
+        game.setContent(" 날짜 : 2024-05-30 \n" +
+                " 장소 : 대전삼정풋살구장 \n" +
+                " 시간 : 20 : 00 ~ 22 : 00\n" +
+                " 구장 정보 : 33 X 16m \n" +
+                " 샤워실 / 풋살화 대여 / 무료 주차 \n" +
+                " 구장 특이사항 \n" +
+                " 흡연 : 흡연구역 외 절대 금연(흡연구역 외에서 흡연 적발시 이후 서비스 이용에 제제가 될 수 있습니다.) \n" +
+                " 풋살화 대여 : O (사이즈 : 235 ~ 285mm / 대여료 : 3천원, 신분증 지참)");
         game.setCreateDate(LocalDateTime.now());
 
         return gameRepository.save(game);

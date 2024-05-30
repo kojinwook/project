@@ -1,24 +1,27 @@
 package com.example.project.football;
 
 
+import com.example.project.football.game.GameService;
+import com.example.project.football.inquiry.InquiryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
 public class MainController {
     private final MainService mainService;
+    private final InquiryService inquiryService;
 
     @RequestMapping("/")
     public String main(Model model, ParamHandler paramHandler) {
 
         MainDataDto mainDataDto = mainService.getDefaultMainData(paramHandler.getKeyword());
         model.addAttribute("mainDataDto", mainDataDto);
+        Long count = inquiryService.getCount();
+        model.addAttribute("count", count);
+
         return "main";
     }
 
@@ -32,8 +35,9 @@ public class MainController {
         return "inquiry";
     }
 
-    @GetMapping("/apply")
-    public String apply() {
+    @GetMapping("/apply/{id}")
+    public String apply(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("gameId", id);
         return "apply";
     }
 
