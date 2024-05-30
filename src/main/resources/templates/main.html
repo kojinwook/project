@@ -80,7 +80,9 @@
                 <div id="editor"></div>
 
                 <h5 th:if="${#lists.size(mainDataDto.targetGame.applyList) > 5}">
-                    <span style="font-weight: bold; color: red;">매치 신청이 마감되었습니다.</span>
+                    <span style="font-weight: bold; color: red;">
+                        <a href="/application/finish">매치 신청이 마감되었습니다.</a>
+                    </span>
                 </h5>
                 <h5 th:text="|${#lists.size(mainDataDto.targetGame.applyList)}개의 신청이 있습니다.|" style="font-weight: bold; color: red;"></h5>
 
@@ -92,15 +94,15 @@
 
                 <form th:action="@{|/apply/${mainDataDto.targetGame.id}|}" method="post" id="applyForm">
                 </form>
-                <a href="#" class="btn w-[100px]" style="background-color: gray;" onclick="submitApplyForm()">매치 신청</a>
+                <a href="/application/{gameId}" class="btn w-[100px]" style="background-color: gray;" onclick="submitApplyForm()">매치 신청</a>
 
-                <div>
+                <div class="btn w-[100px]" style="background-color: gray;" >
                     <input type="button" value="매치 수정" onclick="updateForm()" class="postActionBtn">
                 </div>
             </form>
             <form th:action="@{|/matchs/${targetCalendar.id}/games/${targetGame.id}/delete|}" method="post"
                   id="deleteForm">
-                <input type="button" value="매치 삭제" onclick="deleteForm();" class="postActionBtn">
+                <input type="button" value="매치 삭제" onclick="deleteForm();" class="postActionBtn btn w-[100px]" style="background-color: gray;">
             </form>
 
             <ul class="flex gap-5">
@@ -155,7 +157,7 @@
 
         function submitApplyForm() {
             const applyListSize = /*[[${#lists.size(mainDataDto.targetGame.applyList)}]]*/ 0;
-            if (applyListSize > 5) {
+                      if (applyListSize > 5) {
                 alert("매치 신청이 마감되었습니다.");
             } else {
                 document.getElementById('applyForm').submit();

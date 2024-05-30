@@ -36,6 +36,11 @@ public class ApplyController {
         return "apply_success";
     }
 
+    @GetMapping("/application/finish")
+    public String applicationFinish(){
+        return "applicationFinish";
+    }
+
 
 
 
