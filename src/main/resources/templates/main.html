@@ -18,10 +18,11 @@
     <nav class="bg-blue-300 p-4">
         <div class="container mx-auto flex justify-between items-center">
             <a href="/" class="text-white text-lg font-bold">풋살 모임</a>
-            <h1>Total : <span th:text="${count}"></span></h1>
+
             <ul class="flex space-x-4">
                 <li><a href="/" class=" btn w-[90px]" style="background-color: gray;">홈</a></li>
                 <li><a href="/inquiry" class=" btn w-[100px]"  style="background-color: gray;">고객센터</a></li>
+
                 <li class="relative">
                     <a href="#" class="text-white btn w-[90px]" onclick="toggleMenu()" style="background-color: gray;">메뉴</a>
                     <ul id="menuList" class="absolute hidden bg-black text-black mt-2 p-2 space-y-2" style="text-align: center;">
@@ -32,6 +33,7 @@
                         <button class="btn" onclick="searchModal.showModal()">검 색</button>
                     </ul>
                 </li>
+                <h1>문의 : <span th:text="${count}"></span>개</h1>
             </ul>
         </div>
     </nav>
@@ -39,7 +41,7 @@
     <div class="flex">
         <div class="bg-indigo-300 w-[10%]">
             <ul class="menu h-[100%] overflow-scroll">
-                <li th:replace="~{fragments/calendar::gameTree(${calendarList}, ${targetCalendar})}">
+                <li  th:replace="~{fragments/calendar::gameTree(${calendarList}, ${targetCalendar})}">
             </ul>
 
             <form th:action="@{|/matchs/write|}" method="post">
@@ -67,7 +69,7 @@
         </div>
 
 
-        <div class="w-[70%]">
+        <div class="w-[70%]" style="display: flex; justify-content: flex-end;"  >
             <form th:action="@{|/matchs/${targetCalendar.id}/games/${targetGame.id}/update|}" method="post"
                   id="updateForm">
                 <div>
@@ -79,9 +81,9 @@
                 <input type="hidden" name="content" id="editor-body">
                 <div id="editor"></div>
 
-                <h5 th:if="${#lists.size(mainDataDto.targetGame.applyList) > 5}">
+                <h5 th:if="${#lists.size(mainDataDto.targetGame.applyList) >= 4}">
                     <span style="font-weight: bold; color: red;">
-                        <a href="/application/finish">매치 신청이 마감되었습니다.</a>
+                        <a href="/application/{gameId}">매치 신청이 마감되었습니다.</a>
                     </span>
                 </h5>
                 <h5 th:text="|${#lists.size(mainDataDto.targetGame.applyList)}개의 신청이 있습니다.|" style="font-weight: bold; color: red;"></h5>
@@ -94,7 +96,7 @@
 
                 <form th:action="@{|/apply/${mainDataDto.targetGame.id}|}" method="post" id="applyForm">
                 </form>
-                <a href="/application/{gameId}" class="btn w-[100px]" style="background-color: gray;" onclick="submitApplyForm()">매치 신청</a>
+                <a th:href="@{|/application/${mainDataDto.targetGame.id}|}" class="btn w-[100px]" style="background-color: gray;" onclick="submitApplyForm(event)">매치 신청</a>
 
                 <div class="btn w-[100px]" style="background-color: gray;" >
                     <input type="button" value="매치 수정" onclick="updateForm()" class="postActionBtn">
@@ -138,7 +140,7 @@
         });
         editor.getMarkdown();
     </script>
-    <script>
+    <script th:inline="javascript">
         function updateForm() {
             const form = document.getElementById("updateForm");
             const editorBody = document.getElementById("editor-body");
@@ -155,16 +157,17 @@
             }
         }
 
-        function submitApplyForm() {
-            const applyListSize = /*[[${#lists.size(mainDataDto.targetGame.applyList)}]]*/ 0;
-                      if (applyListSize > 5) {
-                alert("매치 신청이 마감되었습니다.");
-            } else {
-                document.getElementById('applyForm').submit();
-            }
+        function submitApplyForm(event) {
+        event.preventDefault(); // 기본 이벤트를 중단시킵니다.
+        const applyListSize = /*[[${#lists.size(mainDataDto.targetGame.applyList)}]]*/ 0;
+        if (applyListSize >= 4) {
+            alert("매치 신청이 마감되었습니다.");
+        } else {
+            document.getElementById('applyForm').submit();
         }
+    }
     </script>
-    <script>
+    <script th:inline="javascript">
         window.onload = () => {
             const isSearchModal = document.querySelector("#isSearchModal").value;
             const isTagModal = document.querySelector("#isTagModal").value;

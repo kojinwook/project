@@ -35,11 +35,11 @@ public class MainController {
         return "inquiry";
     }
 
-    @GetMapping("/apply/{id}")
-    public String apply(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("gameId", id);
-        return "apply";
-    }
+//    @GetMapping("/apply/{id}")
+//    public String apply(@PathVariable("id") Long id, Model model) {
+//        model.addAttribute("gameId", id);
+//        return "apply";
+//    }
 
 
 }

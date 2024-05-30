@@ -72,7 +72,7 @@ public class MainService {
 
     public Calendar saveDefaultCalendar() {
         Calendar calendar = new Calendar();
-        calendar.setName("새 구장");
+        calendar.setName("----년 --월 --일 --시");
 
         Game game = gameService.saveDefault();
         calendar.addGame(game);

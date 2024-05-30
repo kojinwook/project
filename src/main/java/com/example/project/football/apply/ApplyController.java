@@ -20,7 +20,7 @@ public class ApplyController {
     private final GameService gameService;
 
     @GetMapping("/application/{gameId}")
-    public String showApplyForm(Model model){
+    public String showApplyForm(Model model, @PathVariable("gameId") Long gameId){
         model.addAttribute("apply", new Apply());
         return "apply";
     }
@@ -36,10 +36,10 @@ public class ApplyController {
         return "apply_success";
     }
 
-    @GetMapping("/application/finish")
-    public String applicationFinish(){
-        return "applicationFinish";
-    }
+//    @GetMapping("/application/finish")
+//    public String applicationFinish(){
+//        return "applicationFinish";
+//    }
 
 
 
