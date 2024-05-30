@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>신청 작성</title>
+    <style>
+        body {
+            font-family: Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 30px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333333;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .contact-info p {
+            margin: 10px 0;
+            color: #555555;
+        }
+
+        .contact-form {
+            text-align: left;
+            margin-top: 20px;
+        }
+
+        .contact-form label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333333;
+        }
+
+        .contact-form input[type="text"],
+        .contact-form input[type="tel"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #cccccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        .contact-form button {
+            padding: 12px 24px;
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px; /* 버튼과 전화번호 입력 필드 간격 추가 */
+        }
+
+        .contact-form button:hover {
+            background-color: #0056b3;
+        }
+
+        .error-message {
+            color: red;
+            margin-top: -8px;
+            display: block;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="contact-info">
+        <h2>연락처 정보</h2>
+        <p><strong>신청자 아이디</strong> qwer1234</p>
+        <p><strong>신청자 정보 : 이름 / 성별 / 주 포지션 :</strong> 홍길동 / 남 / 공격수 </p>
+        <p><strong>닉네임</strong> 손흥민</p>
+        <p><strong>전화번호:</strong> 010-1234-5678</p>
+    </div>
+
+    <h1>신청 작성</h1>
+    <div class="contact-form">
+        <h2>신청하기</h2>
+        <form th:action="@{/application}" method="post" onsubmit="validateForm(event)">
+            <label for="loginId">신청자 아이디</label>
+            <input type="text" id="loginId" name="loginId">
+            <div id="loginIdError" class="error-message"></div>
+
+            <label for="content">신청 정보</label>
+            <input type="text" id="content" name="content" >
+            <div id="contentError" class="error-message"></div>
+
+            <label for="nickName">닉네임</label>
+            <input type="text" id="nickName" name="nickName" >
+            <div id="nickNameError" class="error-message"></div>
+
+            <label for="phone">전화번호</label>
+            <input type="tel" id="phone" name="phone">
+            <div id="phoneError" class="error-message"></div>
+            <button type="submit">신청 하기</button>
+        </form>
+    </div>
+    <h5 id="applyCount" style="font-weight: bold; color: red;"></h5>
+</div>
+<script>
+    function validateForm(event) {
+        var loginId = document.getElementById('loginId');
+        var loginIdError = document.getElementById('loginIdError');
+        var content = document.getElementById('content');
+        var contentError = document.getElementById('contentError');
+        var nickName = document.getElementById('nickName');
+        var nickNameError = document.getElementById('nickNameError');
+        var phone = document.getElementById('phone');
+        var phoneError = document.getElementById('phoneError');
+        var valid = true;
+
+        loginIdError.textContent = '';
+        contentError.textContent = '';
+        nickNameError.textContent = '';
+        phoneError.textContent = '';
+
+        if (!loginId.value.trim()) {
+            loginIdError.textContent = '사용자 아이디를 입력해주세요';
+            loginId.focus();
+            valid = false;
+        }
+
+        if (!content.value.trim()) {
+            contentError.textContent = '신청자 정보를 입력해주세요';
+            content.focus();
+            valid = false;
+        }
+        if (!nickName.value.trim()) {
+            nickNameError.textContent = '닉네임을 입력해주세요';
+            nickName.focus();
+            valid = false;
+        }
+        var phonePattern = /^\d{3}-\d{3,4}-\d{4}$/;
+        if (!phone.value.trim()) {
+            phoneError.textContent = '문의하시는분의 전화번호를 입력해주세요';
+            phone.focus();
+            valid = false;
+        } else if (!phonePattern.test(phone.value.trim())) {
+            phoneError.textContent = '유효한 전화번호 형식(예: 010-1234-5678)을 입력해주세요.';
+            phone.focus();
+            valid = false;
+        }
+
+        if (!valid) {
+            event.preventDefault();
+        }
+    }
+</script>
+</body>
+</html>

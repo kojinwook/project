@@ -32,6 +32,10 @@ public class MainController {
         return "inquiry";
     }
 
+    @GetMapping("/apply")
+    public String apply() {
+        return "apply";
+    }
 
 
 }

@@ -18,7 +18,7 @@ public class GameService {
     public Game saveDefault() {
         Game game = new Game();
         game.setTitle("새로운 매치");
-        game.setContent("날짜 : \n" +
+        game.setContent(" 날짜 : \n" +
                 " 장소 : \n" +
                 " 시간 : \n" +
                 " 구장 정보 : \n ");
@@ -31,12 +31,7 @@ public class GameService {
         return gameRepository.findById(id).orElseThrow();
     }
 
-//    public List<Game> getGameListByCalendar(Calendar targetCalendar) {
-//        return gameRepository.findByCalendar(targetCalendar);
-//    }
-//    public List<Game> findAll() {
-//        return gameRepository.findAll();
-//    }
+
 
     public Optional<Game> findById(Long id) {
         return gameRepository.findById(id);

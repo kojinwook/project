@@ -24,11 +24,12 @@ public class Game {
     private LocalDateTime createDate;
     @ManyToOne(fetch = FetchType.LAZY)
     private Calendar calendar;
-    private LocalDateTime modifyDate;
     @OneToMany(mappedBy = "game" , cascade = CascadeType.REMOVE)
     private List<GameTag> gameTagList = new ArrayList<>();
 
     @OneToMany(mappedBy = "game",cascade = CascadeType.REMOVE)
     private List<Apply> applyList = new ArrayList<>();
+
+
 
 }

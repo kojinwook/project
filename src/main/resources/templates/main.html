@@ -1,6 +1,7 @@
 <html lang="ko" layout:decorate="~{layout}">
 <body>
 <div layout:fragment="content"
+
      th:with="calendarList=${mainDataDto.calendarList},
         gameList=${mainDataDto.gameList},
         targetCalendar=${mainDataDto.targetCalendar},
@@ -73,41 +74,30 @@
                 </div>
                 <input type="hidden" name="content" id="editor-body">
                 <div id="editor"></div>
+
+                <h5 th:if="${#lists.size(targetGame.applyList) > 16}">
+                    <span style="font-weight: bold; color: red;">매치 신청이 마감되었습니다.</span>
+                </h5>
+                <h5 th:text="|${#lists.size(targetGame.applyList)}개의 신청이 있습니다.|" style="font-weight: bold; color: red;"></h5>
+
+                <div th:each="apply : ${targetGame.applyList}">
+
+                    <p th:text="${apply.content}"></p>
+                </div>
+
+                <form th:action="@{/apply}" method="post" id="applyForm">
+                </form>
+                <a href="/apply" class="btn w-[100px]" style="background-color: gray;" onclick="submitApplyForm()">매치 신청</a>
+
                 <div>
                     <input type="button" value="매치 수정" onclick="updateForm()" class="postActionBtn">
                 </div>
-            </form>
-            <h5 th:text="|${#lists.size(targetGame.applyList)}개의 신청이 있습니다.|" style="font-weight: bold; color: red;"></h5>
-            <div th:if="${apply.modifyDate != null}" class="badge bg-light text-dark p-2 text-start mx-3">
-                <div class="mb-2">modified at</div>
-                <div th:text="${#temporals.format(apply.modifyDate, 'yyyy-MM-dd HH:mm')}"></div>
-            </div>
-            <div>
-                <ul>
-                    <li th:each="apply, index : ${targetGame.applyList}" style="font-weight: bold; color: blue;">
-                        <span th:text="${apply.content}"></span>
-                        <form th:action="@{|/apply/delete/${apply.id}|}" method="post">
-                            <input type="hidden" name="gameId" th:value="${targetGame.id}">
-                            <input type="hidden" name="applyIndex" th:value="${index.index}">
-                            <button type="submit" style="background-color: red; color: white;">삭제</button>
-                        </form>
-                        <form th:action="@{|/apply/modify/${apply.id}|}">
-                            <button style="background-color: red; color: white;">수정</button>
-                        </form>
-                    </li>
-
-                </ul>
-            </div>
-
-
-            <form th:action="@{|/apply/create/${targetGame.id}|}" method="post">
-                <textarea name="content" id="content" rows="5" style="width: 100%;"></textarea>
-                <input type="submit" value="신청">
             </form>
             <form th:action="@{|/matchs/${targetCalendar.id}/games/${targetGame.id}/delete|}" method="post"
                   id="deleteForm">
                 <input type="button" value="매치 삭제" onclick="deleteForm();" class="postActionBtn">
             </form>
+
             <ul class="flex gap-5">
                 <li th:each="gameTag : ${targetGame.gameTagList}">
                     <form th:action="@{|/games/${targetGame.id}/tags/${gameTag.id}/delete|}" method="post">
@@ -156,6 +146,12 @@
             if (confirm("해당 매치를 삭제하시겠습니까?")) {
                 form.submit();
             }
+        }
+        function submitApplyForm() {
+           var form = document.getElementById("applyForm");
+
+        // 폼을 서버로 제출
+        form.submit();
         }
     </script>
     <script>
