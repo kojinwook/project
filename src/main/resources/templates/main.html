@@ -81,7 +81,7 @@
                 <input type="hidden" name="content" id="editor-body">
                 <div id="editor"></div>
 
-                <h5 th:if="${#lists.size(mainDataDto.targetGame.applyList) >= 4}">
+                <h5 th:if="${#lists.size(mainDataDto.targetGame.applyList) >= 2}">
                     <span style="font-weight: bold; color: red;">
                         <a href="/application/{gameId}">매치 신청이 마감되었습니다.</a>
                     </span>
@@ -96,8 +96,7 @@
 
                 <form th:action="@{|/apply/${mainDataDto.targetGame.id}|}" method="post" id="applyForm">
                 </form>
-
-                <a th:href="@{|/application/${mainDataDto.targetGame.id}|}" class="btn w-[100px]" style="background-color: gray;" >매치 신청</a>
+                <a th:href="@{|/application/${mainDataDto.targetGame.id}|}" class="btn w-[100px]" style="background-color: gray;" onclick="submitApplyForm(event)">매치 신청</a>
 
                 <div class="btn w-[100px]" style="background-color: gray;" >
                     <input type="button" value="매치 수정" onclick="updateForm()" class="postActionBtn">
@@ -159,8 +158,8 @@
         }
 
         function submitApplyForm(event) {
-               const applyListSize = /*[[${#lists.size(mainDataDto.targetGame.applyList)}]]*/ 0;
-        if (applyListSize >= 4) {
+        const applyListSize = /*[[${#lists.size(mainDataDto.targetGame.applyList)}]]*/ 0;
+        if (applyListSize >= 2) {
             alert("매치 신청이 마감되었습니다.");
             event.preventDefault(); // 기본 이벤트를 중단시킵니다.
         } else {
