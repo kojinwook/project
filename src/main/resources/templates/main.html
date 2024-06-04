@@ -96,7 +96,8 @@
 
                 <form th:action="@{|/apply/${mainDataDto.targetGame.id}|}" method="post" id="applyForm">
                 </form>
-                <a th:href="@{|/application/${mainDataDto.targetGame.id}|}" class="btn w-[100px]" style="background-color: gray;" onclick="submitApplyForm(event)">매치 신청</a>
+
+                <a th:href="@{|/application/${mainDataDto.targetGame.id}|}" class="btn w-[100px]" style="background-color: gray;" >매치 신청</a>
 
                 <div class="btn w-[100px]" style="background-color: gray;" >
                     <input type="button" value="매치 수정" onclick="updateForm()" class="postActionBtn">
@@ -158,10 +159,10 @@
         }
 
         function submitApplyForm(event) {
-        event.preventDefault(); // 기본 이벤트를 중단시킵니다.
-        const applyListSize = /*[[${#lists.size(mainDataDto.targetGame.applyList)}]]*/ 0;
+               const applyListSize = /*[[${#lists.size(mainDataDto.targetGame.applyList)}]]*/ 0;
         if (applyListSize >= 4) {
             alert("매치 신청이 마감되었습니다.");
+            event.preventDefault(); // 기본 이벤트를 중단시킵니다.
         } else {
             document.getElementById('applyForm').submit();
         }
