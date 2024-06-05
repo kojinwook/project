@@ -21,11 +21,12 @@
 
             <ul class="flex space-x-4">
                 <li><a href="/" class=" btn w-[90px]" style="background-color: gray;">홈</a></li>
-                <li><a href="/inquiry" class=" btn w-[100px]"  style="background-color: gray;">고객센터</a></li>
+                <li><a href="/inquiry" class=" btn w-[100px]" style="background-color: gray;">고객센터</a></li>
 
                 <li class="relative">
                     <a href="#" class="text-white btn w-[90px]" onclick="toggleMenu()" style="background-color: gray;">메뉴</a>
-                    <ul id="menuList" class="absolute hidden bg-black text-black mt-2 p-2 space-y-2" style="text-align: center;">
+                    <ul id="menuList" class="absolute hidden bg-black text-black mt-2 p-2 space-y-2"
+                        style="text-align: center;">
                         <a href="/signup" class="btn">회원 가입</a>
                         <a href="/logout" class="btn">로그아웃</a>
                         <button class="btn" onclick="renameModal.showModal()">구장 이름 변경</button>
@@ -41,7 +42,7 @@
     <div class="flex">
         <div class="bg-indigo-300 w-[10%]">
             <ul class="menu h-[100%] overflow-scroll">
-                <li  th:replace="~{fragments/calendar::gameTree(${calendarList}, ${targetCalendar})}">
+                <li th:replace="~{fragments/calendar::gameTree(${calendarList}, ${targetCalendar})}">
             </ul>
 
             <form th:action="@{|/matchs/write|}" method="post">
@@ -54,7 +55,8 @@
         </div>
         <div class="bg-red-300 w-[20%] h-[800px] text-center">
             <ul class="h-[100%] overflow-auto">
-                <li th:each="game: ${gameList}" th:class="${game.id == targetGame.id} ? 'bg-blue-600' : ''" class="mb-8">
+                <li th:each="game: ${gameList}" th:class="${game.id == targetGame.id} ? 'bg-blue-600' : ''"
+                    class="mb-8">
                     <a th:data-url="@{|/matchs/${targetCalendar.id}/games/${game.id}|}"
                        th:text="${game.title}"
                        class="getActionBtn font-bold text-lg block"></a>
@@ -69,7 +71,7 @@
         </div>
 
 
-        <div class="w-[70%]" style="display: flex; justify-content: flex-end;"  >
+        <div class="w-[70%]" style="display: flex; justify-content: flex-end;">
             <form th:action="@{|/matchs/${targetCalendar.id}/games/${targetGame.id}/update|}" method="post"
                   id="updateForm">
                 <div>
@@ -86,7 +88,8 @@
                         <a href="/application/{gameId}">매치 신청이 마감되었습니다.</a>
                     </span>
                 </h5>
-                <h5 th:text="|${#lists.size(mainDataDto.targetGame.applyList)}개의 신청이 있습니다.|" style="font-weight: bold; color: red;"></h5>
+                <h5 th:text="|${#lists.size(mainDataDto.targetGame.applyList)}개의 신청이 있습니다.|"
+                    style="font-weight: bold; color: red;"></h5>
 
                 <div th:each="apply : ${mainDataDto.targetGame.applyList}">
                     <p>신청자 닉네임:
@@ -96,15 +99,17 @@
 
                 <form th:action="@{|/apply/${mainDataDto.targetGame.id}|}" method="post" id="applyForm">
                 </form>
-                <a th:href="@{|/application/${mainDataDto.targetGame.id}|}" class="btn w-[100px]" style="background-color: gray;" onclick="submitApplyForm(event)">매치 신청</a>
+                <a th:href="@{|/application/${mainDataDto.targetGame.id}|}" class="btn w-[100px]"
+                   style="background-color: gray;" onclick="submitApplyForm(event)">매치 신청</a>
 
-                <div class="btn w-[100px]" style="background-color: gray;" >
+                <div class="btn w-[100px]" style="background-color: gray;">
                     <input type="button" value="매치 수정" onclick="updateForm()" class="postActionBtn">
                 </div>
             </form>
             <form th:action="@{|/matchs/${targetCalendar.id}/games/${targetGame.id}/delete|}" method="post"
                   id="deleteForm">
-                <input type="button" value="매치 삭제" onclick="deleteForm();" class="postActionBtn btn w-[100px]" style="background-color: gray;">
+                <input type="button" value="매치 삭제" onclick="deleteForm();" class="postActionBtn btn w-[100px]"
+                       style="background-color: gray;">
             </form>
 
             <ul class="flex gap-5">
@@ -150,12 +155,13 @@
                 form.submit();
             }
         }
-        function deleteForm() {
+         function deleteForm() {
             const form = document.getElementById("deleteForm");
-            if (confirm("해당 매치를 삭제하시겠습니까?")) {
+            if (confirm("삭제하시겠습니까?")) {
                 form.submit();
             }
         }
+
 
         function submitApplyForm(event) {
         const applyListSize = /*[[${#lists.size(mainDataDto.targetGame.applyList)}]]*/ 0;
@@ -253,8 +259,8 @@
 
 
     </script>
-    <script th:replace="~{fragments/modal::searchModalJs}" />
-    <script th:replace="~{fragments/modal::tagModalJs}" />
+    <script th:replace="~{fragments/modal::searchModalJs}"/>
+    <script th:replace="~{fragments/modal::tagModalJs}"/>
 </div>
 </body>
 </html>
